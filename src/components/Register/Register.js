@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-import Register_input from './Input-text/Register_input';
+import RegisterInput from './Input-text/RegisterInput';
 import Select from './Select/Select';
 import Gender from './Gender/Gender';
 
-import { RegisterContext, RegisterProvider } from '../../Contexts/RegisterContext.js';
+import { RegisterContext } from '../../Contexts/RegisterContext.js';
 
 import './Register.css';
 
@@ -75,7 +75,7 @@ const Register = () => {
                 <form className="register-template" onSubmit={handleSubmit}>
                     <span className="top-bar"><Link to="/login">Login </Link>/ <span>Register</span></span>
                     { error ? <span className='register-error'> { error } </span>: null }
-                    <Register_input />
+                    <RegisterInput />
                     <Select />
                     <Gender />
                     <button type="submit">Register</button>

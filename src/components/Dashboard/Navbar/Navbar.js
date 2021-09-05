@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import './Navbar.css';
 
@@ -19,7 +20,7 @@ const Navbar = () => {
         <>
             <div className="navbar-container"></div>
             <div className="navbar">
-                <img src={logo} alt="N" className="logo" />
+                <Link to="/"><img src={logo} alt="N" className="logo" /></Link>
                 <label className="search">
                 {
                     !isSearchFocused ? <img src={search} alt="N" /> : null
@@ -27,7 +28,7 @@ const Navbar = () => {
                     <input type="text" placeholder="Search..." className="searchBar" onFocus={handleSearchFocus} onBlur={handleSearchFocus}/>
                 </label>
                 <ul className="navbar-menu">
-                    <li><img src="" alt="P" />Sis</li>
+                    <Link to="/profile"><li><img src="" alt="P" />Sis</li></Link>
                     <li><img src={chat} alt="M" /></li>
                     <li><img src={notif} alt="U" /></li>
                     <li><img src={arrow} alt="Set" /></li>

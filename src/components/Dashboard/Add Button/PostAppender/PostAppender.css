@@ -70,14 +70,16 @@
 .post-appender-mid-part {
     width: 95%;
     min-height: 150px;
-    display: flex;
-    flex-direction: column;
+    max-height: 950px;
+    height: auto;
+    display: inline-block;
     overflow: auto;
 }
 
 .post-appender-content {
     width: 100%;
     min-height: 100px;
+    height: fit-content;
     margin-top: 10px;
     margin-bottom: 10px;
     font-size: 20px;
@@ -88,6 +90,7 @@
 .post-appender-mid-part > img {
     width: 100%;
     max-height: 450px;
+    display: inline-block;
 }
 
 .post-appender-content:focus {

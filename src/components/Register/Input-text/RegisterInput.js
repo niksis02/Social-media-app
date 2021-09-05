@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { RegisterContext } from '../../../Contexts/RegisterContext';
 
-import './Register_input.css';
+import './RegisterInput.css';
 
 const Register_input = () => {
     const {
