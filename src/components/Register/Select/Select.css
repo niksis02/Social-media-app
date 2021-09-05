@@ -1,0 +1,21 @@
+.select-template {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 53px;
+}
+
+.select {
+    width: 230px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.register-template select{
+    width: 66px;
+    height: 25px;
+}
+
+.date-of-birth {
+    font-weight: bold;
+}

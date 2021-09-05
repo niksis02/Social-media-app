@@ -1,0 +1,25 @@
+.name-surname input {
+    height: 35px;
+    width: 110px;
+    margin: 5px;
+    font-size: 20px;
+    border: none;
+    border-bottom: 2px solid grey;
+}
+
+.name-surname input:focus {
+    outline: none;
+}
+
+.email, .password {
+    height: 35px;
+    width: 230px;
+    font-size: 20px;
+    border: none;
+    border-bottom: 2px solid grey;
+    margin: 10px 0;
+}
+
+.email, .password:focus {
+    outline: none;
+}

@@ -1,0 +1,53 @@
+.register {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #3BC0AE, #E5BD3D);
+}
+
+.register-template {
+    width: 375px;
+    height: 610px;
+    border-radius: 30px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.top-bar {
+    font-size: 37px;
+    font-weight: bold;
+    margin: 50px 0 40px 0;
+}
+
+.top-bar a {
+    margin: 0;
+    text-decoration: none;
+    color: black;
+}
+.top-bar span:hover {
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.top-bar a:hover {
+    opacity: 0.5;
+}
+
+.register-template button {
+    margin-top: 30px;
+    width: 100px;
+    height: 30px;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #3BC0AE, #E5BD3D);
+}
+
+.register-error {
+    max-width: 230px;
+    color: red;
+    word-break: break-all;
+    margin-bottom: 20px;
+}

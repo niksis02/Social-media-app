@@ -1,0 +1,5 @@
+.online-friend-list {
+    width: 377px;
+    height: calc(100vh - 70px);
+    overflow: auto;
+}
