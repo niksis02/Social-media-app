@@ -32,6 +32,14 @@ const userSchema = new mongoose.Schema({
         day: reqString,
         month: reqString,
         year: reqString
+    },
+    profilePhoto: {
+        default: '',
+        type: String,
+    },
+    coverPhoto: {
+        default: '',
+        type: String,
     }
 });
 

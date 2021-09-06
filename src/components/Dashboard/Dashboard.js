@@ -21,7 +21,7 @@ const Dashboard = () => {
             <div className="dashBoard">
                 <Navbar />
                 <Switch>
-                    <Route exact path="/profile" component={Profile} />
+                    <Route path="/user-:id" component={Profile} />
                     <Route exact path="/" component={Main} />
                     <Route component={Error404} />
                 </Switch>
