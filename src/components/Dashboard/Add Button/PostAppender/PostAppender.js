@@ -1,14 +1,15 @@
 import { useRef, useState } from 'react';
 
-import './PostAppender.css';
-
 import imageIcon from '../../../../Assets/Pictures/gallery.svg';
 import xIcon from '../../../../Assets/Pictures/xIcon.svg';
 
 import Loading from '../../../Loading/Loading';
 
+import './PostAppender.css';
+
 const PostAppender = ({setIsPostAppenderOpen}) => {
-    const [postPhotoURL, setPostPhotoURL] = useState(null);
+    const [imageURL, setImageURL] = useState(null);
+    const [pickedImage, setPickedImage] = useState(null);
     const [postContent, setPostContent] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -17,34 +18,33 @@ const PostAppender = ({setIsPostAppenderOpen}) => {
     const windowRef = useRef();
 
     const handleOpen = e => {
-        if(e.target === windowRef.current) {
-           setIsPostAppenderOpen(false);
-        }
+        // if(e.target === windowRef.current) {
+        //    setIsPostAppenderOpen(false);
+        // }
     }
 
     const handleFileUpload = async file => {
-        const URL = 'https://api.cloudinary.com/v1_1/dy0ruizyw/image/upload';
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', 'vsxmvzn3');
-        setLoading(true);
-
-        try {
-            const data = await fetch(URL, {
-                method: 'post',
-                body: formData
-            })
-            const json = await data.json();
-            setPostPhotoURL(json.secure_url);
-            setLoading(false);
-        }
-        catch(err) {
-            setError(err.message);
-        }
+        setImageURL(URL.createObjectURL(file));
+        setPickedImage(file);
     }
 
-    const handlePost = async e => {
-        console.log(postPhotoURL, typeof(postPhotoURL));
+    const handlePost = async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        const token = localStorage.getItem('token')
+        formData.append('image', pickedImage);
+        formData.append('content', postContent);
+        const response = await fetch('http://localhost:5000/users/posts/add', {
+            method: 'post',
+            headers: {
+                "Authorization": token,
+                "Accept": "application/json"
+            },
+            body: formData
+        });
+        const data = await response.json();
+        console.log(data);
+        console.log('post button');
     }
 
     return (  
@@ -62,7 +62,7 @@ const PostAppender = ({setIsPostAppenderOpen}) => {
                         onBlur={e => setPostContent(e.target.textContent)}
                     >
                     </div>
-                    { loading?<Loading />:postPhotoURL? <img src={postPhotoURL} alt="" />: null}
+                    { loading?<Loading />:imageURL? <img src={imageURL} alt="" />: null}
                 </div>
                 <div className="post-appender-footer">
                     <span>Add to your post</span>

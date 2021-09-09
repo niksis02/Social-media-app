@@ -3,8 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../Models/UserModel.js');
 
-const jwt_secret = 'asld;kfhsalkjdhgl;sandfklsadfasdf324135sa1df531sad35f15s3ad1fg531asdf53153sa2df11sa3d5f1';
-
+const jwt_secret = process.env.JWT_SECRET;
 
 const userRegister = async (req, res) => {
     const {name, surname, email, password, birth, gender} = req.body;

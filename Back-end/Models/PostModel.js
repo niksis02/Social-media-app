@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose');  
 
 const postSchema = new mongoose.Schema({
     userId: {
@@ -6,10 +6,6 @@ const postSchema = new mongoose.Schema({
         required: true
     },
     content: {
-        type: String,
-        default: ''
-    },
-    image: {
         type: String,
         default: ''
     },
@@ -22,14 +18,31 @@ const postSchema = new mongoose.Schema({
     }],
     comment: [{
         author: {
-            type: String
+            type: String,
+            default: ''
         },
         date: {
-            type: String
+            type: String,
+            default: ''
         },
         content: {
-            type: String
-        }
+            type: String,
+            default: ''
+        },
+        replies: [{
+            author: {
+                type: String,
+                default: ''
+            },
+            date: {
+                type: String,
+                default: ''
+            },
+            content: {
+                type: String,
+                default: ''
+            }
+        }]
     }]
 })
 

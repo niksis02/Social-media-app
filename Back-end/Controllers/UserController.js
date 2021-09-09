@@ -1,6 +1,7 @@
 const User = require('../Models/UserModel.js');
 const Post = require('../Models/PostModel.js');
 
+
 const getUser = async (req, res) => {
     const { id } = req.body;
     console.log(id);

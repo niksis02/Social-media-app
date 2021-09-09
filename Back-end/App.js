@@ -1,11 +1,14 @@
 const express = require('express');
 const cors = require('cors');
+const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const userRouter = require('./Routes/UserRouter');
 
-const URL = 'mongodb+srv://niksis02:nikoyan02@cluster0.19sgc.mongodb.net/Nikmedia?retryWrites=true&w=majority';
+dotenv.config();
 
-mongoose.connect(URL, {
+const dbURL = process.env.DB_URL;
+
+mongoose.connect(dbURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true
