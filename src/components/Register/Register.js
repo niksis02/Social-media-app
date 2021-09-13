@@ -22,7 +22,6 @@ const Register = () => {
         error, 
         setError
     } = useContext(RegisterContext);
-    console.log(birthYear);
 
     let history = useHistory();
     const token = localStorage.getItem('token');
@@ -39,11 +38,7 @@ const Register = () => {
                     surname,
                     email,
                     password,
-                    birth: {
-                        day: birthDay,
-                        month: birthMonth,
-                        year: birthYear
-                    },
+                    birth: `${birthDay}-${birthMonth}-${birthYear}`,
                     gender
                 })
             });

@@ -1,0 +1,46 @@
+.post-buttons {
+    height: 44px;
+    width: 660px;
+    border-top: 1px solid #CED0D4;
+    border-bottom: 1px solid #CED0D4;
+    display: flex;
+    align-items: center;
+}
+
+.post-buttons > div {
+    width: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    border-radius: 10px;
+}
+
+.post-buttons > div:hover {
+    cursor: pointer;
+    background-color: #F2F2F2;
+}
+
+.post-comment-button > img, .post-share-button > img {
+    height: 25px;
+    width: 25px;
+    margin-right: 5px;
+}
+
+.post-buttons > div > span {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.post-like-button {
+    height: 36px;
+    width: 36px;
+}
+
+.post-liked-button {
+    height: 19px;
+    width: 19px;
+    margin-right: 5px;
+}
+

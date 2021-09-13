@@ -29,17 +29,8 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     birth: {
-        day: reqString,
-        month: reqString,
-        year: reqString
-    },
-    profilePhoto: {
-        default: '',
         type: String,
-    },
-    coverPhoto: {
-        default: '',
-        type: String,
+        required: true
     }
 });
 

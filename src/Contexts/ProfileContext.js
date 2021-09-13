@@ -1,6 +1,8 @@
 import { createContext, useState } from "react";
 
-export const ProfileContext = createContext();
+export const ProfileContext = createContext({
+    posts: []
+});
 
 export const ProfileProvider = props => {
     const [name, setName] = useState('');
@@ -11,6 +13,8 @@ export const ProfileProvider = props => {
     const [profilePhoto, setProfilePhoto] = useState('');
     const [coverPhoto, setCoverPhoto] = useState('');
     const [loading, setLoading] = useState(true);
+    const [userInfo, setUserInfo] = useState({});
+    const [postImages, setPostImages] = useState([]);
 
     return (
         <ProfileContext.Provider value={{
@@ -21,7 +25,9 @@ export const ProfileProvider = props => {
             posts, setPosts,
             profilePhoto, setProfilePhoto,
             coverPhoto, setCoverPhoto,
-            loading, setLoading
+            loading, setLoading,
+            userInfo, setUserInfo,
+            postImages, setPostImages
         }}>
             {props.children}
         </ProfileContext.Provider>

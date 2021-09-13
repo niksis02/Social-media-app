@@ -12,7 +12,16 @@ const imageSchema = mongoose.Schema({
     imageURL: {
         type: String,
         required: true
+    },
+    profilePhoto: {
+        type: Boolean,
+        required: true
+    },
+    coverPhoto: {
+        type: Boolean, 
+        required: true
     }
+    
 });
 
 const Image = mongoose.model('images', imageSchema);

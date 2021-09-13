@@ -6,13 +6,9 @@ const Image = require('../Models/ImageModel.js');
 
 const postAdd = async (req, res) => {
     try {
-        const now = new Date();
-        const date = now.getMonth() + '-' + now.getFullYear();
-
         const post = {
             userId: res.locals.id,
-            content: req.body.content,
-            date
+            content: req.body.content
         }
         const newPost = await Post.create(post);
 
@@ -20,7 +16,9 @@ const postAdd = async (req, res) => {
         const newImage = await Image.create({
             userId: res.locals.id,
             postId: newPost.id,
-            imageURL: result.secure_url
+            imageURL: result.secure_url,
+            profilePhoto: false,
+            coverPhoto: false
         });
         return res.json({status: 'ok'});
     } 

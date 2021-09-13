@@ -18,9 +18,9 @@ const PostAppender = ({setIsPostAppenderOpen}) => {
     const windowRef = useRef();
 
     const handleOpen = e => {
-        // if(e.target === windowRef.current) {
-        //    setIsPostAppenderOpen(false);
-        // }
+        if(e.target === windowRef.current) {
+           setIsPostAppenderOpen(false);
+        }
     }
 
     const handleFileUpload = async file => {

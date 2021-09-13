@@ -33,7 +33,7 @@ const Select = () => {
                     {monthOptions.map((elem, index) => (
                         <option 
                             key={index} 
-                            value={elem}
+                            value={index + 1}
                         >{elem}</option>
                     ))}
                 </select>

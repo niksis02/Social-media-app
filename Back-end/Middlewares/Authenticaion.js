@@ -1,6 +1,8 @@
 function authentication(req, res, next){
     const {name, surname, email, password, birth, gender} = req.body;
-    const age = new Date().getFullYear() - birth.year;
+    const year = birth.match(/(?<=-)\d+$/);
+
+    const age = year? new Date().getFullYear() - year: null;
 
     if(!name || !surname || !email || !password || !age || !gender) {
         return res.json({ status: 'error', msg: 'Enter all the required fields'});

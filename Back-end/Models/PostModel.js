@@ -9,14 +9,10 @@ const postSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
-    date: {
-        type: String,
-        required: true
-    },
     likes: [{
         type: String
     }],
-    comment: [{
+    comments: [{
         author: {
             type: String,
             default: ''
@@ -44,7 +40,7 @@ const postSchema = new mongoose.Schema({
             }
         }]
     }]
-})
+}, {timestamps: true});
 
 const Post = mongoose.model('posts', postSchema);
 
