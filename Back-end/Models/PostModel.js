@@ -9,9 +9,7 @@ const postSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
-    likes: [{
-        type: String
-    }],
+    likes: [String],
     comments: [{
         author: {
             type: String,

@@ -12,7 +12,6 @@ const PostAppender = ({setIsPostAppenderOpen}) => {
     const [pickedImage, setPickedImage] = useState(null);
     const [postContent, setPostContent] = useState("");
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
 
     const uploaderRef = useRef();
     const windowRef = useRef();
@@ -23,7 +22,7 @@ const PostAppender = ({setIsPostAppenderOpen}) => {
         }
     }
 
-    const handleFileUpload = async file => {
+    const handleFileUpload = file => {
         setImageURL(URL.createObjectURL(file));
         setPickedImage(file);
     }

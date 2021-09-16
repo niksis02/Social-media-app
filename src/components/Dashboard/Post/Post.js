@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useState } from 'react';
 
 import PostHeader from './Post-header/PostHeader';
 import PostPhoto from './Post-photo/PostPhoto';
@@ -11,8 +11,10 @@ import './Post.css';
 export const PostContext = createContext();
 
 const Post = ({post, userInfo, postImage}) => {
+    const [likes, setLikes] = useState(post.likes);
+    
     return ( 
-        <PostContext.Provider value={{post, userInfo, postImage}}>
+        <PostContext.Provider value={{post, userInfo, postImage, likes, setLikes}}>
             <div className="post">
                 <PostHeader />
                 <PostPhoto />

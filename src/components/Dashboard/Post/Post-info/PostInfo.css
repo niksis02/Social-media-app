@@ -13,6 +13,11 @@
     align-items: center;
 }
 
+.post-likes-bar > span:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .post-likes-bar svg {
     height: 18px;
     width: 18px;

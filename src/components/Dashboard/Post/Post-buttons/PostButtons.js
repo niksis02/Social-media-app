@@ -9,13 +9,68 @@ import commentIcon from '../../../../Assets/Pictures/comment.svg';
 import './PostButtons.css';
 
 const PostButtons = () => {
-    const { post } = useContext(PostContext);
+    const { post, likes, setLikes, userInfo } = useContext(PostContext);
     const isLikedByCurrentUser = Boolean(post.likes.find(elem => elem === post.userId));
     const [isLiked, setIsLiked] = useState(isLikedByCurrentUser);
+
+    const token = localStorage.getItem('token');
+
+    const handleLikes = async () => {
+        if(isLiked) {
+            try {
+                const result = await fetch('http://localhost:5000/users/posts/likes/remove', {
+                    method: 'put',
+                    headers: {
+                        "Authorization": token,
+                        "Content-type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    body: JSON.stringify({
+                        postId: post._id
+                    })
+                });
+                const data = await result.json();
+                if(data.status === 'ok') {
+                    setIsLiked(false);
+                    setLikes(likes.filter(elem => elem !== userInfo.id));
+                }
+                else {
+                    new Error(data.msg);
+                }
+            } catch(err) {
+                console.log(err);
+            }
+        } 
+        else {
+            try {
+                const result = await fetch('http://localhost:5000/users/posts/likes/add', {
+                    method: 'put',
+                    headers: {
+                        "Authorization": token,
+                        "Content-type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    body: JSON.stringify({
+                        postId: post._id
+                    })
+                });
+                const data = await result.json();
+                if(data.status === 'ok') {
+                    setIsLiked(true);
+                    setLikes([...likes, userInfo.id]);
+                }
+                else {
+                    new Error(data.msg);
+                }
+            } catch(err) {
+                console.log(err);
+            }
+        }
+    }
     
     return ( 
         <div className="post-buttons">
-            <div onClick={() => {setIsLiked(!isLiked)}}>
+            <div onClick={() => handleLikes()}>
                 {isLiked? <img src={likedIcon} className="post-liked-button" />: <img src={likeIcon}  className="post-like-button" />}
                 <span style={{color: isLiked? '#2DCC70':'black'}}>Like</span>
             </div>

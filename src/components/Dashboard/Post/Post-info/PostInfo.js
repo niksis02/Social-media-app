@@ -7,19 +7,19 @@ import { ReactComponent as LikeIcon } from '../../../../Assets/Pictures/likeIcon
 import './PostInfo.css';
 
 const PostInfo = () => {
-    const { post } = useContext(PostContext);
+    const { post, likes } = useContext(PostContext);
 
     return ( 
         <>
         {
-            post.likes.length !== 0 || post.comments.length !== 0?
+            likes.length !== 0 || post.comments.length !== 0?
             <div className="post-info">
                 <div className="post-likes-bar">
                 {
-                post.likes.length !== 0?
+                likes.length !== 0?
                 <>
                     <LikeIcon fill="#2DCC70" />
-                    <span>{post.likes.length}</span>
+                    <span>{likes.length}</span>
                 </>
                     :null
                 }

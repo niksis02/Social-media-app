@@ -27,6 +27,48 @@ const postAdd = async (req, res) => {
     }
 }
 
+const postLikeAdd = async(req, res) => {
+    try {
+        const userId = res.locals.id;
+        const { postId } = req.body;
+
+        if(!postId || typeof(postId) !== 'string') {
+            return res.json({status: 'error', msg: 'Oops, postId is required'});
+        }
+
+        const result = await Post.findOneAndUpdate({_id: postId}, { 
+            $addToSet: {
+                likes: userId
+            }
+        });
+        return res.json({status: 'ok'});
+    } catch(err) {
+        return res.json({status: 'error', msg: err.message});
+    }
+}
+
+const postLikeRemove = async(req, res) => {
+    try {
+        const userId = res.locals.id;
+        const { postId } = req.body;
+
+        if(!postId || typeof(postId) !== 'string') {
+            return res.json({status: 'error', msg: 'Oops, postId is required'});
+        }
+
+        const result = await Post.findOneAndUpdate({_id: postId}, { 
+            $pull: {
+                likes: userId
+            }
+        });
+        return res.json({status: 'ok'});
+    } catch(err) {
+        return res.json({status: 'error', msg: err.message});
+    }
+}
+
 module.exports = {
-    postAdd
+    postAdd,
+    postLikeAdd,
+    postLikeRemove
 }
