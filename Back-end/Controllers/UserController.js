@@ -26,6 +26,61 @@ const getUser = async (req, res) => {
     }
 }
 
+const searchUser = async (req, res) => {
+    const { regex, page } = res.locals;
+
+    const userList = await User.aggregate([
+        {
+            $project: {
+                stringId: { '$toString': '$_id'},
+                fullName : { $concat: ['$name', ' ', '$surname'] },
+                name: '$name',
+                surname: '$surname'
+            }
+        },
+        {
+            $match: {
+                fullName: regex
+            }
+        },
+        {
+            $lookup: {
+                from: 'images',
+                let: {
+                    id: '$stringId'
+                },
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: {
+                                $eq: ["$$id", "$userId"],
+                            }, 
+                            profilePhoto: true
+                        }
+                    }
+                ],
+                as: 'profilePhoto'
+            }
+        },
+        {
+            $unset: ['fullName', 'stringId']
+        },
+        {
+            $limit: 5
+        },
+        {
+            $skip: page
+        }
+    ]);
+
+    userList.map(elem => {
+        return elem.profilePhoto = elem.profilePhoto[0] ? elem.profilePhoto[0].imageURL : null;
+    })
+    
+    return res.json({status: 'ok', msg: userList});
+}
+
 module.exports = {
-    getUser
+    getUser,
+    searchUser
 };

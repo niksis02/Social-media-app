@@ -28,10 +28,7 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         required: true
     },
-    birth: {
-        type: String,
-        required: true
-    }
+    birth: reqString
 });
 
 const User = mongoose.model('Users', userSchema);

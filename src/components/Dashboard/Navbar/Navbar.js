@@ -9,6 +9,8 @@ import notif from '../../../Assets/Pictures/notif.svg';
 import arrow from '../../../Assets/Pictures/arrow.svg';
 import search from '../../../Assets/Pictures/search.svg';
 
+import SearchResult from './SearchResult/SearchResult';
+
 const Navbar = () => {
     const [isSearchFocused, setIsSearchFocused] = useState(false);
 
@@ -25,7 +27,14 @@ const Navbar = () => {
                 {
                     !isSearchFocused ? <img src={search} alt="N" /> : null
                 }
-                    <input type="text" placeholder="Search..." className="searchBar" onFocus={handleSearchFocus} onBlur={handleSearchFocus}/>
+                    <input 
+                        type="text" 
+                        placeholder="Search..." 
+                        className="searchBar" 
+                        onFocus={handleSearchFocus} 
+                        onBlur={handleSearchFocus}
+                    />
+                    <SearchResult />
                 </label>
                 <ul className="navbar-menu">
                     <Link to="/profile"><li><img src="" alt="P" />Sis</li></Link>

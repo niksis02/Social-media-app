@@ -4,7 +4,7 @@ function authentication(req, res, next){
 
     const age = year? new Date().getFullYear() - year: null;
 
-    if(!name || !surname || !email || !password || !age || !gender) {
+    if(!name || !surname || !email || !password || !age || typeof(gender) !== 'boolean') {
         return res.json({ status: 'error', msg: 'Enter all the required fields'});
     }
     if(password.length < 6) {
