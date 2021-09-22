@@ -47,16 +47,16 @@ const Profile = () => {
                 const coverPic = data.images.find(image => image.coverPhoto);
 
                 setPosts(data.posts);
-                setProfilePhoto(profilePic.imageURL? profilePic.imageURL: data.gender?profilePhotoMale:profilePhotoFemale);
+                setProfilePhoto(profilePic? profilePic.imageURL: data.gender?profilePhotoMale:profilePhotoFemale);
                 setName(data.name);
                 setSurname(data.surname);
-                setCoverPhoto(coverPic.imageURL);
+                setCoverPhoto(coverPic? coverPic.imageURL: null);
                 setPostImages(data.images);
                 setUserInfo({
                     name: data.name,
                     surname: data.surname,
-                    profilePhoto: profilePic.imageURL? profilePic.imageURL: data.gender?profilePhotoMale:profilePhotoFemale,
-                    coverPhoto: coverPic.imageURL
+                    profilePhoto: profilePic? profilePic.imageURL: data.gender?profilePhotoMale:profilePhotoFemale,
+                    coverPhoto: coverPic? coverPic.imageURL: null
                 });
                 setLoading(false);
             }

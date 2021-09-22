@@ -1,10 +1,13 @@
 .search-result {
-    height: 200px;
-    width: 450px;
+    max-height: 455px;
+    width: 320px;
     position: absolute;
     left: 0;
     top: 70px;
     background-color: white; 
-    overflow-y: scroll; 
+    overflow-y: auto; 
     overflow-x: hidden;
+    box-shadow: 5px 5px 5px 2px #C8C9CC;
+    padding: 2px 5px;
 }
+

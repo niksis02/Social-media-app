@@ -1,0 +1,34 @@
+.userList-item {
+    text-decoration: none;
+}
+
+.userList-item > li {
+    height: 48px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 6px;
+}
+
+.userList-item > li:hover {
+    background-color: #E3E4E5;
+    cursor: pointer;
+}
+
+.userList-item > li > img {
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+    margin: 0 10px;
+}
+
+.userList-item > li > span {
+    text-decoration: none;
+    list-style: none;
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: auto;
+}

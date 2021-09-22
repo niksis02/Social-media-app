@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import search from '../../../../Assets/Pictures/search.svg';
 
 import SearchResult from './SearchResult/SearchResult';
 import useFetch from '../../../../Helpers/useFetch';
+import useClickChecker from '../../../../Helpers/useClickChecker';
 
 import './UserSearchBar.css'
 
@@ -12,14 +13,19 @@ const UserSearchBar = () => {
     const [query, setQuery] = useState('');
     const [page, setPage] = useState(0);
     const {data, loading, error} = useFetch('http://localhost:5000/users/search', query, page);
+    const searchResultRef = useRef(null);
+    const { outside, setOutside } = useClickChecker(searchResultRef);
 
     const handleSearchFocus = () => {
         setIsSearchFocused(!isSearchFocused);
+        setOutside(false);
     }
     const handleQuery = e => {
         setQuery(e.target.value);
+        setOutside(false);
         setPage(0);
     }
+    console.log(outside);
 
     return ( 
         <label className="search">
@@ -33,13 +39,15 @@ const UserSearchBar = () => {
                 value={query}
                 onChange={handleQuery}
                 onFocus={handleSearchFocus} 
-                onBlur={handleSearchFocus}
+                onBlur={() => {setIsSearchFocused(!isSearchFocused)}}
             />
-            {data.length !== 0 && <SearchResult 
+            {data.length !== 0 && !outside && <SearchResult 
+                ref={searchResultRef}
                 data={data} 
                 loading={loading}
                 error={error}
                 setPage={setPage}
+                setOutside={setOutside}
             />}
         </label>
      );

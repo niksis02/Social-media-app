@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { PostContext } from '../Post';
-import moment from 'moment';
+import Moment from 'moment';
 
 import moreIcon from '../../../../Assets/Pictures/more.svg';
 
@@ -9,7 +9,7 @@ import './PostHeader.css';
 
 const PostHeader = () => {
     const { post, userInfo } = useContext(PostContext);
-    const date = moment(post.createdAt).format('MMMM D') + ' at ' + moment(post.createdAt).format('HH:mm A');
+    const date = Moment(post.createdAt).format('MMMM D') + ' at ' + Moment(post.createdAt).format('HH:mm A');
     const [createDate, setCreateDate] = useState(date);
 
     return ( 

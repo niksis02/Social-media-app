@@ -1,23 +1,22 @@
-import { useRef } from 'react';
+import { forwardRef } from 'react';
 
 import InfiniteScroll from '../../../../../Helpers/InfiniteScroll'
 import UserSearchItem from './User-search-item/UserSearchItem';
 
 import './SearchResult.css';
 
-const SearchResult = ({data, loading, error, setPage}) => {
-    const containerRef = useRef();
+const SearchResult = ({data, loading, error, setPage, setOutside}, ref) => {
 
     return ( 
-        <div className="search-result" ref={containerRef}>
+        <div className="search-result" ref={ref}>
             <InfiniteScroll 
-                containerRef={containerRef.current}
+                containerRef={ref.current}
                 setPage={setPage}
             >
                 <ul>
                     {data.length !== 0 && 
                         data.map((user) => {
-                            return <UserSearchItem user={user} key={user._id} />
+                            return <UserSearchItem user={user} key={user._id} setOutside={setOutside} />
                         })
                     }
                 </ul>
@@ -26,4 +25,4 @@ const SearchResult = ({data, loading, error, setPage}) => {
      );
 }
  
-export default SearchResult;
+export default forwardRef(SearchResult);

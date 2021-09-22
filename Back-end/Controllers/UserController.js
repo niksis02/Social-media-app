@@ -28,7 +28,6 @@ const getUser = async (req, res) => {
 
 const searchUser = async (req, res) => {
     const { regex, page } = res.locals;
-    console.log(regex);
 
     const userList = await User.aggregate([
         {
@@ -36,7 +35,8 @@ const searchUser = async (req, res) => {
                 stringId: { '$toString': '$_id'},
                 fullName : { $concat: ['$name', ' ', '$surname'] },
                 name: '$name',
-                surname: '$surname'
+                surname: '$surname',
+                gender: '$gender'
             }
         },
         {
@@ -67,10 +67,10 @@ const searchUser = async (req, res) => {
             $unset: ['fullName', 'stringId']
         },
         {
-            $limit: 5
+            $skip: 5 * page
         },
         {
-            $skip: page * 5
+            $limit: 5
         }
     ]);
 
