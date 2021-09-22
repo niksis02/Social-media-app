@@ -28,6 +28,7 @@ const getUser = async (req, res) => {
 
 const searchUser = async (req, res) => {
     const { regex, page } = res.locals;
+    console.log(regex);
 
     const userList = await User.aggregate([
         {
@@ -69,7 +70,7 @@ const searchUser = async (req, res) => {
             $limit: 5
         },
         {
-            $skip: page
+            $skip: page * 5
         }
     ]);
 

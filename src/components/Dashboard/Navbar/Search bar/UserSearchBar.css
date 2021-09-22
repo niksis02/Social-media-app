@@ -1,0 +1,30 @@
+.search {
+    margin-left: 20px;
+    margin-right: auto;
+    height: 40px;
+    width: 325px;
+    border-radius: 25px;
+    background-color: #F0F2F5;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 9px;
+}
+
+.search img {
+    height: 30px;
+    width: 30px;
+}
+
+.searchBar {
+    height: 30px;
+    width: 100%;
+    border: none;
+    background-color: #F0F2F5;
+    font-size: 22px;
+    margin-left: 3px;
+}
+
+.searchBar:focus {
+    outline: none;
+}
