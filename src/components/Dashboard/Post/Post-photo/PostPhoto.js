@@ -5,18 +5,18 @@ import { PostContext } from '../Post';
 import './PostPhoto.css';
 
 const PostPhoto = () => {   
-    const { userInfo, postImage } = useContext(PostContext);
+    const { post } = useContext(PostContext);
 
     return ( 
         <div className="post-photo-container">
-            {postImage.profilePhoto?
+            {post.isProfPic?
                 <div className="post-profile-photo-container">
                     <div className="post-cover-photo-background">
-                        {userInfo.coverPhoto?<img src={userInfo.coverPhoto}></img>:null}
+                        {post.authorCoverPhoto?<img src={post.authorCoverPhoto}></img>:null}
                     </div>
-                    <img src={postImage.imageURL} className='post-profile-photo' />
+                    <img src={post.image} className='post-profile-photo' />
                 </div>
-                : <img src={postImage.imageURL} className='post-photo' />
+                : <img src={post.image} className='post-photo' />
             }
         </div>
      );

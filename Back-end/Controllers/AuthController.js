@@ -7,7 +7,6 @@ dotenv.config();
 const User = require('../Models/UserModel.js');
 
 const jwt_secret = process.env.JWT_SECRET;
-console.log(jwt_secret)
 
 const userRegister = async (req, res) => {
     const {name, surname, email, password, birth, gender} = req.body;

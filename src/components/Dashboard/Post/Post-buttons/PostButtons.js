@@ -9,8 +9,10 @@ import commentIcon from '../../../../Assets/Pictures/comment.svg';
 import './PostButtons.css';
 
 const PostButtons = () => {
-    const { post, likes, setLikes, userInfo } = useContext(PostContext);
-    const isLikedByCurrentUser = Boolean(post.likes.find(elem => elem === post.userId));
+    const { post, likes, setLikes } = useContext(PostContext);
+    console.log(likes, 'hostId', post.hostId);
+    const isLikedByCurrentUser = Boolean(likes.find(elem => elem === post.hostId));
+    //console.log('IsLikedByCurrentUser',isLikedByCurrentUser);
     const [isLiked, setIsLiked] = useState(isLikedByCurrentUser);
 
     const token = localStorage.getItem('token');
@@ -32,7 +34,7 @@ const PostButtons = () => {
                 const data = await result.json();
                 if(data.status === 'ok') {
                     setIsLiked(false);
-                    setLikes(likes.filter(elem => elem !== userInfo.id));
+                    setLikes(likes.filter(elem => elem !== post.hostId));
                 }
                 else {
                     new Error(data.msg);
@@ -57,7 +59,7 @@ const PostButtons = () => {
                 const data = await result.json();
                 if(data.status === 'ok') {
                     setIsLiked(true);
-                    setLikes([...likes, userInfo.id]);
+                    setLikes([...likes, post.hostId]);
                 }
                 else {
                     new Error(data.msg);

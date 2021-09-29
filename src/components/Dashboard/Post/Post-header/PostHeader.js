@@ -8,15 +8,15 @@ import moreIcon from '../../../../Assets/Pictures/more.svg';
 import './PostHeader.css';
 
 const PostHeader = () => {
-    const { post, userInfo } = useContext(PostContext);
+    const { post } = useContext(PostContext);
     const date = Moment(post.createdAt).format('MMMM D') + ' at ' + Moment(post.createdAt).format('HH:mm A');
     const [createDate, setCreateDate] = useState(date);
 
     return ( 
         <div className="post-header">
-            <Link to={`/user-${post.userId}`}><img src={userInfo.profilePhoto}/></Link>
+            <Link to={`/user-${post.userId}`}><img src={post.authorProfPic}/></Link>
             <div className="post-author-date">
-                <Link to={`/user-${post.userId}`}><span>{userInfo.name + ' ' + userInfo.surname}</span></Link>
+                <Link to={`/user-${post.userId}`}><span>{post.authorName + ' ' + post.authorSurname}</span></Link>
                 <span>{createDate}</span>
             </div>
             <img src={moreIcon} className="post-options">

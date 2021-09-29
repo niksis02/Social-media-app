@@ -1,0 +1,15 @@
+const profilePic = data.images.find(image => image.profilePhoto);
+                const coverPic = data.images.find(image => image.coverPhoto);
+
+                setPosts(data.posts);
+                setProfilePhoto(profilePic? profilePic.imageURL: data.gender?profilePhotoMale:profilePhotoFemale);
+                setName(data.name);
+                setSurname(data.surname);
+                setCoverPhoto(coverPic? coverPic.imageURL: null);
+                setPostImages(data.images);
+                setUserInfo({
+                    name: data.name,
+                    surname: data.surname,
+                    profilePhoto: profilePic? profilePic.imageURL: data.gender?profilePhotoMale:profilePhotoFemale,
+                    coverPhoto: coverPic? coverPic.imageURL: null
+                });

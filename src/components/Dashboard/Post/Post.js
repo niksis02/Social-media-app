@@ -10,11 +10,11 @@ import './Post.css';
 
 export const PostContext = createContext();
 
-const Post = ({post, userInfo, postImage}) => {
+const Post = ({post}) => {
     const [likes, setLikes] = useState(post.likes);
     
     return ( 
-        <PostContext.Provider value={{post, userInfo, postImage, likes, setLikes}}>
+        <PostContext.Provider value={{post, likes, setLikes }}>
             <div className="post">
                 <PostHeader />
                 <PostPhoto />

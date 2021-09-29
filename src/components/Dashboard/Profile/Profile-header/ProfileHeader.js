@@ -7,12 +7,7 @@ import ProfileNavbar from '../Profile-navbar/ProfileNavbar';
 import './ProfileHeader.css';
 
 const ProfileHeader = () => {
-    const {
-        name, 
-        surname, 
-        profilePhoto, 
-        coverPhoto
-    } = useContext(ProfileContext);
+    const { data } = useContext(ProfileContext);
 
     const { id } = useParams();
 
@@ -21,11 +16,11 @@ const ProfileHeader = () => {
         <>
             <div className="profile-pictures">
                 <div className="profile-cover-photo-background">
-                    {coverPhoto?<img src={coverPhoto} alt="B" className="profile-cover-photo"/>: null}
+                    {data.coverPic?<img src={data.coverPic} alt="B" className="profile-cover-photo"/>: null}
                 </div>
-                <img src={profilePhoto} alt="P" className="profile-picture"/>
+                <img src={data.profilePic} alt="P" className="profile-picture"/>
             </div>
-            <span className="profile-name">{name + ' ' + surname}</span>
+            <span className="profile-name">{data.name + ' ' + data.surname}</span>
             <div className="profile-navigation">
                 <ProfileNavbar id={id} />
             </div>

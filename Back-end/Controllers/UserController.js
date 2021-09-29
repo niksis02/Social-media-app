@@ -5,21 +5,136 @@ const Image = require('../Models/ImageModel.js');
 
 const getUser = async (req, res) => {
     const { id } = req.body;
+    const hostId = res.locals.id;
     try {
-        const user = await User.findById(id);
-        const posts = await Post.find({userId: id});
+        const profileInfoArray = await User.aggregate([
+            {
+                $project: {
+                    _id_str: { '$toString': '$_id'},
+                    name: '$name',
+                    surname: '$surname',
+                    gender: '$gender'
+                }
+            },
+            {
+                $match: {
+                    _id_str: id
+                }
+            },
+            {
+                $lookup: {
+                    from: 'images',
+                    let: {
+                        id: '$_id_str'
+                    },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $eq: ["$$id", "$userId"],
+                                }, 
+                                profilePhoto: true
+                            }
+                        }
+                    ],
+                    as: 'profilePhotos'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$profilePhotos',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: 'images',
+                    let: {
+                        id: '$_id_str'
+                    },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $eq: ["$$id", "$userId"],
+                                }, 
+                                coverPhoto: true
+                            }
+                        }
+                    ],
+                    as: 'coverPhotos'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$coverPhotos',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $set: {
+                    profilePic: '$profilePhotos.imageURL',
+                    coverPic: '$coverPhotos.imageURL',
+                }
+            },
+            {
+                $unset: ['profilePhotos', 'coverPhotos', '_id_str']
+            }
+        ]);
 
-        const postIds = posts.map(elem => elem.id);
-        const images = await Image.find({ 'postId': { $in: postIds } });
-        
-        const publicInfo = {
-            name: user.name,
-            surname: user.surname,
-            gender: user.gender,
-            posts,
-            images
-        }
-        return res.json({status: 'ok', msg: publicInfo});
+        const posts = await Post.aggregate([
+            {
+                $project: {
+                    userId: '$userId',
+                    _id_str: { '$toString': '$_id'}, 
+                    content: '$content',
+                    likes: '$likes',
+                    comments: '$comments',
+                    createdAt: '$createdAt'
+                }
+            },
+            {
+                $match: {
+                    userId: id
+                }
+            },
+            {
+                $lookup: {
+                    from: 'images',
+                    localField: '_id_str',
+                    foreignField: 'postId',
+                    as: 'images'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$images',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $set: {
+                    image: '$images.imageURL',
+                    isProfPic: '$images.profilePhoto',
+                    current: '$images.current'
+                }
+            },
+            {
+                $unset: ['_id_str', 'images']
+            }
+        ]);
+        if(!profileInfoArray[0]) {
+            return res.json({status: 'error', msg: 'There is no such user'});
+        } 
+        else {
+            const profileInfo = profileInfoArray[0];
+
+            profileInfo.host = id === hostId;
+            profileInfo.posts = posts;
+            profileInfo.hostId = hostId;
+
+            return res.json({status: 'ok', msg: profileInfo});
+        } 
     }
     catch(err) {
         return res.json({status: 'error', msg: err.message});

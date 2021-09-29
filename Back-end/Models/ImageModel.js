@@ -20,6 +20,10 @@ const imageSchema = mongoose.Schema({
     coverPhoto: {
         type: Boolean, 
         required: true
+    },
+    current: {
+        type: Boolean,
+        required: true
     }
     
 });

@@ -6,12 +6,12 @@ import { PostContext } from '../Post';
 import './PostCommentInput.css';
 
 const PostCommentInput = () => {
-    const { userInfo } = useContext(PostContext);
+    const { post } = useContext(PostContext);
     const [comment, setComment] = useState('');
 
     return ( 
         <div className="post-comment-input">
-            <img src={userInfo.profilePhoto} />
+            <img src={post.authorProfPic} />
             <input 
                 type="text" 
                 placeholder="Write a comment..."

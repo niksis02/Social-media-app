@@ -25,7 +25,6 @@ const UserSearchBar = () => {
         setOutside(false);
         setPage(0);
     }
-    console.log(outside);
 
     return ( 
         <label className="search">

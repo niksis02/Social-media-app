@@ -18,7 +18,8 @@ const postAdd = async (req, res) => {
             postId: newPost.id,
             imageURL: result.secure_url,
             profilePhoto: false,
-            coverPhoto: false
+            coverPhoto: false,
+            current: false
         });
         return res.json({status: 'ok'});
     } 
@@ -31,16 +32,20 @@ const postLikeAdd = async(req, res) => {
     try {
         const userId = res.locals.id;
         const { postId } = req.body;
+        console.log('userId', userId, '   postId:', postId);
 
         if(!postId || typeof(postId) !== 'string') {
             return res.json({status: 'error', msg: 'Oops, postId is required'});
         }
 
-        const result = await Post.findOneAndUpdate({_id: postId}, { 
+        const result = await Post.findOneAndUpdate({_id: postId}, 
+        { 
             $addToSet: {
                 likes: userId
-            }
-        });
+            },
+        }
+        );
+        console.log(result.likes);
         return res.json({status: 'ok'});
     } catch(err) {
         return res.json({status: 'error', msg: err.message});
@@ -61,6 +66,9 @@ const postLikeRemove = async(req, res) => {
                 likes: userId
             }
         });
+
+        console.log(result.likes);
+
         return res.json({status: 'ok'});
     } catch(err) {
         return res.json({status: 'error', msg: err.message});
