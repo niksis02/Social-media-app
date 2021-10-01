@@ -5,6 +5,7 @@ import PostPhoto from './Post-photo/PostPhoto';
 import PostInfo from './Post-info/PostInfo';
 import PostButtons from './Post-buttons/PostButtons';
 import PostCommentInput from './Post-comment-input/PostCommentInput';
+import PostContent from './Post-content/PostContent';
 
 import './Post.css';
 
@@ -12,11 +13,14 @@ export const PostContext = createContext();
 
 const Post = ({post}) => {
     const [likes, setLikes] = useState(post.likes);
+
+    console.log('post:', post);
     
     return ( 
         <PostContext.Provider value={{post, likes, setLikes }}>
             <div className="post">
                 <PostHeader />
+                <PostContent />
                 <PostPhoto />
                 <PostInfo />
                 <PostButtons />

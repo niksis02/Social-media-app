@@ -1,13 +1,13 @@
 import { useContext } from 'react';
 import { useParams } from 'react-router';
-import { ProfileContext } from '../../../../Contexts/ProfileContext';
 
+import { ProfileContext } from '../Profile';
 import ProfileNavbar from '../Profile-navbar/ProfileNavbar';
 
 import './ProfileHeader.css';
 
 const ProfileHeader = () => {
-    const { data } = useContext(ProfileContext);
+    const { user } = useContext(ProfileContext);
 
     const { id } = useParams();
 
@@ -16,11 +16,11 @@ const ProfileHeader = () => {
         <>
             <div className="profile-pictures">
                 <div className="profile-cover-photo-background">
-                    {data.coverPic?<img src={data.coverPic} alt="B" className="profile-cover-photo"/>: null}
+                    {user.coverPic?<img src={user.coverPic} alt="B" className="profile-cover-photo"/>: null}
                 </div>
-                <img src={data.profilePic} alt="P" className="profile-picture"/>
+                <img src={user.profilePic} alt="P" className="profile-picture"/>
             </div>
-            <span className="profile-name">{data.name + ' ' + data.surname}</span>
+            <span className="profile-name">{user.name + ' ' + user.surname}</span>
             <div className="profile-navigation">
                 <ProfileNavbar id={id} />
             </div>

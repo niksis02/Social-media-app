@@ -1,51 +1,41 @@
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useMemo, useState, useRef } from 'react';
 
-import { ProfileContext } from '../../../../Contexts/ProfileContext';
+import { ProfileContext } from '../Profile';
 import Post from '../../Post/Post';
-
-import ProfPicMale from '../../../../Assets/Pictures/profile_male.png';
-import ProfPicFemale from '../../../../Assets/Pictures/profile_female.png';
-
+import useScrollFetch from '../../../../Helpers/useScrollFetch'
 
 import './ProfileFeed.css';
+import InfiniteScroll from '../../../../Helpers/InfiniteScroll';
 
 const ProfileFeed = () => {
-    const { data } = useContext(ProfileContext);
-    const [comingPost, setComingPost] = useState(data.posts);
-    console.log('data:', data, 'comingPost:', comingPost);
+    const [page, setPage] = useState(0);
+    const feedRef = useRef();
+    const { user, id } = useContext(ProfileContext);
+    const { data, loading, error } = useScrollFetch('http://localhost:5000/users/posts/getProfileFeed', page, id);
 
     const posts = useMemo(() => {
-        if(!data.profilePic) {
-            data.profilePic = data.gender? ProfPicMale: ProfPicFemale;
-            comingPost && comingPost.map(elem => {
-                return elem.authorProfPic  = data.gender? ProfPicMale: ProfPicFemale;
-            });
-        }
-        if(!data.coverPic) {
-            data.coverPic = null;
-        }
-
-        comingPost && comingPost.forEach(elem => {
-            elem.authorProfPic = data.profilePic;
-            elem.authorCoverPic = data.coverPic;
-            elem.authorName = data.name;
-            elem.authorSurname = data.surname;
-            elem.authorGender = data.gender;
-            elem.hostId = data.hostId;
+        data.forEach(elem => {
+            elem.authorProfPic = user.profilePic;
+            elem.authorCoverPic = user.coverPic;
+            elem.authorName = user.name;
+            elem.authorSurname = user.surname;
+            elem.authorGender = user.gender;
+            elem.hostId = user.hostId;
+            elem.host = user.hostId === id;
         });
+        return data;
+    }, [data])
 
-        return comingPost;
-    }, [comingPost])
-    
-    console.log('posts:', posts);
 
     return ( 
-        <div className="profile-feed">
-            {
-                // posts && posts.length !== 0 ? posts.map(post => {
-                //     return <Post post={post} key={post._id} />
-                // }): <h1>No Posts available yet</h1>
-            }
+        <div className="profile-feed" ref={feedRef}>
+            <InfiniteScroll setPage={setPage} containerRef={feedRef.current}>
+                {
+                    posts && posts.length !== 0 ? posts.map(post => {
+                        return <Post post={post} key={post._id} />
+                    }): <h1>No Posts available yet</h1>
+                }
+            </InfiniteScroll>
         </div>
      );
 }

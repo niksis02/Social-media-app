@@ -67,16 +67,80 @@ const postLikeRemove = async(req, res) => {
             }
         });
 
-        console.log(result.likes);
-
         return res.json({status: 'ok'});
     } catch(err) {
         return res.json({status: 'error', msg: err.message});
     }
 }
 
+const getProfileFeed = async (req, res) => {
+    const { page, id } = req.body;
+
+    console.log(id, page);
+
+    if(typeof(page) !== 'number' || page % 1 !== 0 || page < 0) {
+        return res.json({status: 'error', msg: 'Invalid page number'});
+    }
+
+    try {
+        const posts = await Post.aggregate([
+            {
+                $project: {
+                    userId: '$userId',
+                    _id_str: { '$toString': '$_id'}, 
+                    content: '$content',
+                    likes: '$likes',
+                    comments: '$comments',
+                    createdAt: '$createdAt'
+                }
+            },
+            {
+                $match: {
+                    userId: id
+                }
+            },
+            {
+                $lookup: {
+                    from: 'images',
+                    localField: '_id_str',
+                    foreignField: 'postId',
+                    as: 'images'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$images',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $set: {
+                    image: '$images.imageURL',
+                    isProfPic: '$images.profilePhoto',
+                    current: '$images.current'
+                }
+            },
+            {
+                $unset: ['_id_str', 'images']
+            },
+            {
+                $limit: 5
+            },
+            {
+                $skip: 5 * page
+            },
+        ]);
+        
+        return res.json({status: 'ok', msg: posts});
+    }
+    catch(err) {
+        return res.json({status: 'error', msg: err.message})
+    }
+}
+
 module.exports = {
     postAdd,
     postLikeAdd,
-    postLikeRemove
+    postLikeRemove,
+    getProfileFeed
 }

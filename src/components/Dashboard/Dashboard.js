@@ -2,7 +2,7 @@ import { useHistory } from 'react-router';
 import { Route, Switch } from 'react-router-dom';
 
 import Navbar from './Navbar/Navbar';
-import ProfileWithProvider from '../../Helpers/ProfileWithProvider';
+import Profile from './Profile/Profile';
 import Main from './Main page/Main';
 import Error404 from '../Error404.js/Error404';
 
@@ -21,7 +21,7 @@ const Dashboard = () => {
             <div className="dashBoard">
                 <Navbar />
                 <Switch>
-                    <Route path="/user-:id" component={ProfileWithProvider} />
+                    <Route path="/user-:id" component={Profile} />
                     <Route exact path="/" component={Main} />
                     <Route component={Error404} />
                 </Switch>

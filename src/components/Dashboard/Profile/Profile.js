@@ -1,5 +1,5 @@
 import { useParams, Switch, Route } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
+import { createContext, useMemo } from 'react';
 
 import About from './About/About';
 import ProfilePhotos from './ProfilePhotos/ProfilePhotos';
@@ -7,68 +7,52 @@ import FriendList from './FriendList/FriendList';
 import ProfileFeed from './Profile-feed/ProfileFeed';
 import ProfileHeader from './Profile-header/ProfileHeader';
 import Loading from '../../Loading/Loading';
+import useFetch from '../../../Helpers/useFetch'
 
-import { ProfileContext } from '../../../Contexts/ProfileContext';
+import ProfPicMale from '../../../Assets/Pictures/profile_male.png';
+import ProfPicFemale from '../../../Assets/Pictures/profile_female.png';
+
 
 import './Profile.css';
 
-const Profile = () => {
-    const { data, setData } = useContext(ProfileContext);
-    const [loading, setLoading] = useState(false);
+export const ProfileContext = createContext({});
 
+const Profile = () => {
     const { id } = useParams();
     const token = localStorage.getItem('token');
 
-    useEffect(() => {
-        async function fetchData() {
-            try{
-                setLoading(true);
-                const response = await fetch('http://localhost:5000/users/getUser', {
-                    method: 'post',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'authorization': token
-                    },
-                    body: JSON.stringify({
-                        id
-                    })
-                });
-                const result = await response.json();
-                setLoading(false);
+    const { data, loading, error } = useFetch('http://localhost:5000/users/getUser', token, id);
 
-                if(result.status === 'error') {
-                    console.log(result.msg);
-                }
-                if(result.status === 'ok') {
-                    setData(result.msg);
-                    console.log(result.msg);
-                }
-            }
-            catch(err) {
-                console.log(err);
-            }
+    const user = useMemo(() => {
+        if(!data.profilePic) {
+            data.profilePic = data.gender? ProfPicMale: ProfPicFemale;
         }
-        fetchData();
-    }, [id])
+        if(!data.coverPic) {
+            data.coverPic = null;
+        }
+        return data;
+    }, [data]);
     
     return ( 
-        <div className="profile">
-            {data? 
-                <>
-                    <div className="profile-upper-side">
-                        <ProfileHeader />
+        <>
+            {user && user.name && 
+                <ProfileContext.Provider value={{user, id, loading, error}}>
+                    <div className="profile">
+                        <div className="profile-upper-side">
+                            <ProfileHeader />
+                        </div>
+                        <div className="profile-lower-side">
+                            <Switch>
+                                <Route exact path={`/user-${id}/about`} component={About} />
+                                <Route exact path={`/user-${id}/friends`} component={FriendList} />
+                                <Route exact path={`/user-${id}/photos`} component={ProfilePhotos} />
+                                <Route exact path={`/user-${id}`} component={ProfileFeed} />
+                            </Switch>
+                        </div>
                     </div>
-                    <div className="profile-lower-side">
-                        <Switch>
-                            <Route exact path={`/user-${id}/about`} component={About} />
-                            <Route exact path={`/user-${id}/friends`} component={FriendList} />
-                            <Route exact path={`/user-${id}/photos`} component={ProfilePhotos} />
-                            {data && <Route exact path={`/user-${id}`} component={ProfileFeed} />}
-                        </Switch>
-                    </div>
-                </>: <Loading />
+                </ProfileContext.Provider>
             }
-        </div>
+        </>
      );
 }
  

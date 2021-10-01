@@ -7,7 +7,7 @@ const getUser = async (req, res) => {
     const { id } = req.body;
     const hostId = res.locals.id;
     try {
-        const profileInfoArray = await User.aggregate([
+        const profileArray = await User.aggregate([
             {
                 $project: {
                     _id_str: { '$toString': '$_id'},
@@ -82,58 +82,13 @@ const getUser = async (req, res) => {
             }
         ]);
 
-        const posts = await Post.aggregate([
-            {
-                $project: {
-                    userId: '$userId',
-                    _id_str: { '$toString': '$_id'}, 
-                    content: '$content',
-                    likes: '$likes',
-                    comments: '$comments',
-                    createdAt: '$createdAt'
-                }
-            },
-            {
-                $match: {
-                    userId: id
-                }
-            },
-            {
-                $lookup: {
-                    from: 'images',
-                    localField: '_id_str',
-                    foreignField: 'postId',
-                    as: 'images'
-                }
-            },
-            {
-                $unwind: {
-                    path: '$images',
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $set: {
-                    image: '$images.imageURL',
-                    isProfPic: '$images.profilePhoto',
-                    current: '$images.current'
-                }
-            },
-            {
-                $unset: ['_id_str', 'images']
-            }
-        ]);
-        if(!profileInfoArray[0]) {
+        if(!profileArray[0]) {
             return res.json({status: 'error', msg: 'There is no such user'});
         } 
         else {
-            const profileInfo = profileInfoArray[0];
-
-            profileInfo.host = id === hostId;
-            profileInfo.posts = posts;
-            profileInfo.hostId = hostId;
-
-            return res.json({status: 'ok', msg: profileInfo});
+            const profile = profileArray[0];
+            profile.hostId = hostId;
+            return res.json({status: 'ok', msg: profile});
         } 
     }
     catch(err) {

@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import search from '../../../../Assets/Pictures/search.svg';
 
 import SearchResult from './SearchResult/SearchResult';
-import useFetch from '../../../../Helpers/useFetch';
+import useSearchFetch from '../../../../Helpers/useSearchFetch';
 import useClickChecker from '../../../../Helpers/useClickChecker';
 
 import './UserSearchBar.css'
@@ -12,7 +12,7 @@ const UserSearchBar = () => {
     const [isSearchFocused, setIsSearchFocused] = useState(false);
     const [query, setQuery] = useState('');
     const [page, setPage] = useState(0);
-    const {data, loading, error} = useFetch('http://localhost:5000/users/search', query, page);
+    const {data, loading, error} = useSearchFetch('http://localhost:5000/users/search', query, page);
     const searchResultRef = useRef(null);
     const { outside, setOutside } = useClickChecker(searchResultRef);
 

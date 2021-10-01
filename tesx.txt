@@ -1,15 +1,19 @@
-const profilePic = data.images.find(image => image.profilePhoto);
-                const coverPic = data.images.find(image => image.coverPhoto);
+const posts = useMemo(() => {
+        if(!data.profilePic) {
+            data.profilePic = data.gender? ProfPicMale: ProfPicFemale;
+            comingPost && comingPost.map(elem => {
+                return elem.authorProfPic  = data.gender? ProfPicMale: ProfPicFemale;
+            });
+        }
+        if(!data.coverPic) {
+            data.coverPic = null;
+        }
 
-                setPosts(data.posts);
-                setProfilePhoto(profilePic? profilePic.imageURL: data.gender?profilePhotoMale:profilePhotoFemale);
-                setName(data.name);
-                setSurname(data.surname);
-                setCoverPhoto(coverPic? coverPic.imageURL: null);
-                setPostImages(data.images);
-                setUserInfo({
-                    name: data.name,
-                    surname: data.surname,
-                    profilePhoto: profilePic? profilePic.imageURL: data.gender?profilePhotoMale:profilePhotoFemale,
-                    coverPhoto: coverPic? coverPic.imageURL: null
-                });
+        comingPost && comingPost.forEach(elem => {
+            elem.authorProfPic = data.profilePic;
+            elem.authorCoverPic = data.coverPic;
+            elem.authorName = data.name;
+            elem.authorSurname = data.surname;
+            elem.authorGender = data.gender;
+            elem.hostId = data.hostId;
+        });

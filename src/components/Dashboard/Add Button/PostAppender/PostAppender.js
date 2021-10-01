@@ -42,8 +42,7 @@ const PostAppender = ({setIsPostAppenderOpen}) => {
             body: formData
         });
         const data = await response.json();
-        console.log(data);
-        console.log('post button');
+        setIsPostAppenderOpen(false);
     }
 
     return (  
