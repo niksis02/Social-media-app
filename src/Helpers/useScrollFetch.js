@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 const useScrollFetch = (url, page, id) => {
+    console.log('page:', page)
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -17,6 +18,7 @@ const useScrollFetch = (url, page, id) => {
                 })
             });
             const result = await response.json();
+            console.log(result);
             setLoading(false);
 
             if(result.status === 'ok') {
@@ -40,6 +42,7 @@ const useScrollFetch = (url, page, id) => {
 
     useEffect(() => {
         fetchData(url, page, id);
+        console.log('fetch');
     }, [url, page, id])
 
     return { data, loading, error };

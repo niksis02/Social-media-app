@@ -13,8 +13,6 @@ export const PostContext = createContext();
 
 const Post = ({post}) => {
     const [likes, setLikes] = useState(post.likes);
-
-    console.log('post:', post);
     
     return ( 
         <PostContext.Provider value={{post, likes, setLikes }}>

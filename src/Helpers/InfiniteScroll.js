@@ -1,4 +1,4 @@
-import { useEffect, useRef,  } from "react";
+import { useEffect, useRef } from "react";
 
 const InfiniteScroll = ({children, containerRef, setPage}) => {
     const bottomRef = useRef();
@@ -12,10 +12,12 @@ const InfiniteScroll = ({children, containerRef, setPage}) => {
     useEffect(() => {
         const observer = new IntersectionObserver(scrollCallback, {
             root: containerRef,
-            rootMargin: '0px'
+            rootMargin: '10px'
         });
 
-        observer.observe(bottomRef.current);
+        if(bottomRef && bottomRef.current) {
+            observer.observe(bottomRef.current);
+        }
 
         return () => {
             observer.disconnect();
@@ -25,7 +27,7 @@ const InfiniteScroll = ({children, containerRef, setPage}) => {
     return ( 
         <>
             {children}
-            <div ref={bottomRef}></div>
+            <div ref={bottomRef} style={{height: '2px'}}></div>
         </>
      );
 }

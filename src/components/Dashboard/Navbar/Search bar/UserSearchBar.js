@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 
 import search from '../../../../Assets/Pictures/search.svg';
 
@@ -40,7 +40,8 @@ const UserSearchBar = () => {
                 onFocus={handleSearchFocus} 
                 onBlur={() => {setIsSearchFocused(!isSearchFocused)}}
             />
-            {data.length !== 0 && !outside && <SearchResult 
+            {data.length !== 0 && !outside && 
+            <SearchResult 
                 ref={searchResultRef}
                 data={data} 
                 loading={loading}

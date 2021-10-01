@@ -26,7 +26,6 @@ const ProfileFeed = () => {
         return data;
     }, [data])
 
-
     return ( 
         <div className="profile-feed" ref={feedRef}>
             <InfiniteScroll setPage={setPage} containerRef={feedRef.current}>

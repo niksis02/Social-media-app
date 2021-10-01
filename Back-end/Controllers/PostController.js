@@ -121,14 +121,19 @@ const getProfileFeed = async (req, res) => {
                 }
             },
             {
-                $unset: ['_id_str', 'images']
+                $sort: {
+                    createdAt: -1
+                }
             },
             {
-                $limit: 5
+                $unset: ['_id_str', 'images']
             },
             {
                 $skip: 5 * page
             },
+            {
+                $limit: 5
+            }
         ]);
         
         return res.json({status: 'ok', msg: posts});
