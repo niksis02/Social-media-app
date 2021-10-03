@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import InfiniteScroll from '../../../../../Helpers/InfiniteScroll'
+import InfiniteScroll from '../../../../../Helpers/InfiniteScroll';
 import UserSearchItem from './User-search-item/UserSearchItem';
 
 import './SearchResult.css';

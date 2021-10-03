@@ -2,10 +2,10 @@ import { useContext, useMemo, useState, useRef } from 'react';
 
 import { ProfileContext } from '../Profile';
 import Post from '../../Post/Post';
-import useScrollFetch from '../../../../Helpers/useScrollFetch'
+import useScrollFetch from '../../../../Hooks/useScrollFetch';
+import InfiniteScroll from '../../../../Helpers/InfiniteScroll';
 
 import './ProfileFeed.css';
-import InfiniteScroll from '../../../../Helpers/InfiniteScroll';
 
 const ProfileFeed = () => {
     const [page, setPage] = useState(0);
@@ -21,7 +21,7 @@ const ProfileFeed = () => {
             elem.authorSurname = user.surname;
             elem.authorGender = user.gender;
             elem.hostId = user.hostId;
-            elem.host = user.hostId === id;
+            elem.host = user.host;
         });
         return data;
     }, [data])

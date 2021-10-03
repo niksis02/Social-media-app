@@ -1,6 +1,6 @@
 import './Feed.css';
 
-import AddPostButton from '../../Add Button/AddPostButton.js';
+import AddPostButton from '../../../Common/Buttons/Add Button/AddPostButton';
 
 const Feed = () => {
     return (  

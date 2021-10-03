@@ -2,7 +2,8 @@ import { useContext } from 'react';
 import { useParams } from 'react-router';
 
 import { ProfileContext } from '../Profile';
-import ProfileNavbar from '../Profile-navbar/ProfileNavbar';
+import ProfNavbarButtons from './Profile-navbar-buttons/ProfNavbarButtons';
+import ProfileNavbar from './Profile-navbar/ProfileNavbar';
 
 import './ProfileHeader.css';
 
@@ -23,6 +24,7 @@ const ProfileHeader = () => {
             <span className="profile-name">{user.name + ' ' + user.surname}</span>
             <div className="profile-navigation">
                 <ProfileNavbar id={id} />
+                <ProfNavbarButtons />
             </div>
         </>
      );

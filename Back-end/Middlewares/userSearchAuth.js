@@ -10,7 +10,6 @@ const userSearchAuth = (req, res, next) => {
 
     const queryArray = query.split(' ');
     const filteredQuery = queryArray.filter(elem => elem !== ' ' && elem !== '');
-    //console.log('filteredQuery:' , filteredQuery);
 
     const regexString = filteredQuery.join(' ');
     const regex = new RegExp(regexString, 'i');

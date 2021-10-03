@@ -1,6 +1,8 @@
 const User = require('../Models/UserModel.js');
 const Post = require('../Models/PostModel.js');
 const Image = require('../Models/ImageModel.js');
+const Friend = require('../Models/FriendModel.js');
+const Notification = require('../Models/NotifModel.js');
 
 
 const getUser = async (req, res) => {
@@ -88,6 +90,30 @@ const getUser = async (req, res) => {
         else {
             const profile = profileArray[0];
             profile.hostId = hostId;
+
+            if(hostId !== id) {
+                const friend = await Friend.findOne({
+                    user1: {
+                        $in: [hostId, id]
+                    },
+                    user2: {
+                        $in: [hostId, id]
+                    }
+                });
+
+                const requesting = await Notification.findOne({
+                    to: id,
+                    from: hostId
+                });
+
+                const receiving = await Notification.findOne({
+                    to: hostId,
+                    from: id
+                });
+
+                
+
+            }
             return res.json({status: 'ok', msg: profile});
         } 
     }

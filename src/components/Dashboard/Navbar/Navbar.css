@@ -3,7 +3,7 @@
     flex: row;
     justify-content: space-between;
     align-items: center;
-    height: 70px;
+    height: 56px;
     width: 100%;
     background-color: #2DCC70;
     position: fixed;
@@ -12,7 +12,7 @@
 }
 
 .navbar-container {
-    height: 70px;
+    height: 56px;
     position: relative;
 }
 
@@ -31,8 +31,8 @@
 
 .navbar-menu li {
     margin: 0 10px;
-    height: 50px;
-    width: 50px;
+    height: 40px;
+    width: 40px;
     background-color: #76FFAF;
     border-radius: 50%;
     display: flex;
@@ -46,6 +46,6 @@
 }
 
 .navbar-menu li img {
-    height: 30px;
-    width: 30px;
+    height: 20px;
+    width: 20px;
 }

@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react';
 
-import imageIcon from '../../../../Assets/Pictures/gallery.svg';
-import xIcon from '../../../../Assets/Pictures/xIcon.svg';
+import imageIcon from '../../../../../Assets/Pictures/gallery.svg';
+import xIcon from '../../../../../Assets/Pictures/xIcon.svg';
 
-import Loading from '../../../Loading/Loading';
+import Loading from '../../../../Loading/Loading';
 
 import './PostAppender.css';
 

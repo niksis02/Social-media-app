@@ -3,7 +3,7 @@ import { useState } from 'react';
 import './AddPostButton.css';
 
 import PostAppender from './PostAppender/PostAppender';
-import addIcon from '../../../Assets/Pictures/addPost.svg';
+import addIcon from '../../../../Assets/Pictures/addPost.svg';
 
 const AddPostButton = () => {
     const [isPostAppenderOpen, setIsPostAppenderOpen] = useState(false);

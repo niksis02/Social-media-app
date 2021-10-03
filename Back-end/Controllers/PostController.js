@@ -76,8 +76,6 @@ const postLikeRemove = async(req, res) => {
 const getProfileFeed = async (req, res) => {
     const { page, id } = req.body;
 
-    console.log(id, page);
-
     if(typeof(page) !== 'number' || page % 1 !== 0 || page < 0) {
         return res.json({status: 'error', msg: 'Invalid page number'});
     }

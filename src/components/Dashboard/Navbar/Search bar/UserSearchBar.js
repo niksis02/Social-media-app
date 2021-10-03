@@ -3,8 +3,8 @@ import { useState, useRef } from 'react';
 import search from '../../../../Assets/Pictures/search.svg';
 
 import SearchResult from './SearchResult/SearchResult';
-import useSearchFetch from '../../../../Helpers/useSearchFetch';
-import useClickChecker from '../../../../Helpers/useClickChecker';
+import useSearchFetch from '../../../../Hooks/useSearchFetch';
+import useClickChecker from '../../../../Hooks/useClickChecker';
 
 import './UserSearchBar.css'
 

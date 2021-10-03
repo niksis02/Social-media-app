@@ -7,7 +7,7 @@ import FriendList from './FriendList/FriendList';
 import ProfileFeed from './Profile-feed/ProfileFeed';
 import ProfileHeader from './Profile-header/ProfileHeader';
 import Loading from '../../Loading/Loading';
-import useFetch from '../../../Helpers/useFetch'
+import useFetch from '../../../Hooks/useFetch';
 
 import ProfPicMale from '../../../Assets/Pictures/profile_male.png';
 import ProfPicFemale from '../../../Assets/Pictures/profile_female.png';
@@ -30,8 +30,14 @@ const Profile = () => {
         if(!data.coverPic) {
             data.coverPic = null;
         }
+        if(typeof(data.isFriend) === 'undefined'){
+            data.isFriend = false;
+        }
+        data.host = data.hostId === id;
         return data;
     }, [data]);
+
+    console.log('user:', user);
     
     return ( 
         <>
