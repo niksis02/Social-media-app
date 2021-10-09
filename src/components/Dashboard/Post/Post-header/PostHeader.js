@@ -14,12 +14,12 @@ const PostHeader = () => {
 
     return ( 
         <div className="post-header">
-            <Link to={`/user-${post.userId}`}><img src={post.authorProfPic}/></Link>
+            <Link to={`/user-${post.userId}`}><img src={post.authorProfPic} alt="Profile pic" /></Link>
             <div className="post-author-date">
                 <Link to={`/user-${post.userId}`}><span>{post.authorName + ' ' + post.authorSurname}</span></Link>
                 <span>{createDate}</span>
             </div>
-            <img src={moreIcon} className="post-options">
+            <img src={moreIcon} alt="More Icon" className="post-options">
                 
             </img>
         </div>

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import profilePhotoMale from '../../../../../../Assets/Pictures/profile_male.png';
@@ -13,7 +12,7 @@ const UserSearchItem = ({user, setOutside}) => {
         <ul>
             <Link to={`/user-${user._id}`} className="userList-item">
                 <li onClick={() => {setOutside(true)}}>
-                    <img src={profilePic} alt="Profile Picture" />
+                    <img src={profilePic} alt="Profile Pic" />
                     <span>{`${user.name} ${user.surname}`}</span>
                 </li>
             </Link>

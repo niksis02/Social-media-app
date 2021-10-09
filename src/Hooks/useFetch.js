@@ -6,8 +6,8 @@ const useFetch = (url, token, id) => {
     const [error, setError] = useState('');
 
     async function fetchData(url, token, id) {
+        setLoading(true);
         try {
-            setLoading(true);
             const response = await fetch(url, {
                 method: 'post', 
                 headers: {
@@ -18,6 +18,7 @@ const useFetch = (url, token, id) => {
                     id
                 })
             })
+
             const result = await response.json();
             setLoading(false);
 
@@ -36,7 +37,7 @@ const useFetch = (url, token, id) => {
 
     useEffect(() => {
         fetchData(url, token, id);
-    }, [url, id])
+    }, [url, id, token])
 
     return { data, loading, error};
 }

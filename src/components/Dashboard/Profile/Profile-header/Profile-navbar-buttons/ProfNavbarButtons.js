@@ -1,16 +1,16 @@
 import { useContext } from 'react';
 
-import AddFriend from '../../../../Common/Buttons/Add friend/AddFriend';
+import FriendButton from '../../../../Common/Buttons/Friend button/FriendButton';
 import { ProfileContext } from '../../Profile';
 
 import './ProfNavbarButtons.css';
 
 const ProfNavbarButtons = () => {
-    const { user } = useContext(ProfileContext);
+    const { user, id } = useContext(ProfileContext);
 
     return ( 
         <div className="profile-navbar-buttons">
-            {!user.host && <AddFriend />}
+            {user.friendStatus !== 0 && <FriendButton id={id} friendStatusProp={user.friendStatus}/>}
         </div>
      );
 }

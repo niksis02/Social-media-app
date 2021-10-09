@@ -22,7 +22,7 @@ const InfiniteScroll = ({children, containerRef, setPage}) => {
         return () => {
             observer.disconnect();
         }
-    }, [])
+    }, [containerRef]);
 
     return ( 
         <>

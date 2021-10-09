@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState, useRef } from 'react';
+import { useContext, useMemo, useState, useRef, useEffect } from 'react';
 
 import { ProfileContext } from '../Profile';
 import Post from '../../Post/Post';
@@ -11,7 +11,12 @@ const ProfileFeed = () => {
     const [page, setPage] = useState(0);
     const feedRef = useRef();
     const { user, id } = useContext(ProfileContext);
-    const { data, loading, error } = useScrollFetch('http://localhost:5000/users/posts/getProfileFeed', page, id);
+    const { data, setData, loading, error } = useScrollFetch('http://localhost:5000/users/posts/getProfileFeed', page, id);
+
+    useEffect(() => {
+        setPage(0);
+        setData([]);
+    }, [id, setData])
 
     const posts = useMemo(() => {
         data.forEach(elem => {
@@ -24,7 +29,7 @@ const ProfileFeed = () => {
             elem.host = user.host;
         });
         return data;
-    }, [data])
+    }, [user, data]);
 
     return ( 
         <div className="profile-feed" ref={feedRef}>

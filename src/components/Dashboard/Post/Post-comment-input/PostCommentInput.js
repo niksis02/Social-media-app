@@ -11,7 +11,7 @@ const PostCommentInput = () => {
 
     return ( 
         <div className="post-comment-input">
-            <img src={post.authorProfPic} />
+            <img src={post.authorProfPic} alt="Profile pic" />
             <input 
                 type="text" 
                 placeholder="Write a comment..."

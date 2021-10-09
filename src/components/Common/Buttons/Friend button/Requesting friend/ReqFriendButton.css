@@ -1,6 +1,6 @@
-.add-friend-button {
+.friend-requesting-button {
     height: 36px;
-    width: 120px;
+    width: fit-content;
     background-color: #2DCC70;
     display: flex;
     align-items: center;
@@ -9,19 +9,19 @@
     padding: 0 10px;
 }
 
-.add-friend-button:hover {
+.friend-requesting-button:hover {
     cursor: pointer;
     background-color: #28B864;
 }
 
-.add-friend-button > span {
+.friend-requesting-button > span {
     font-size: 19px;
     font-weight: bold;
     color: white;
 }
 
-.add-friend-button > img {
+.friend-requesting-button > img {
     height: 16px;
     width: 16px;
-    margin-right: 2px;
+    margin: 0 2px;
 }

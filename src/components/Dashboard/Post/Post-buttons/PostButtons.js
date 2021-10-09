@@ -71,15 +71,15 @@ const PostButtons = () => {
     return ( 
         <div className="post-buttons">
             <div onClick={() => handleLikes()}>
-                {isLiked? <img src={likedIcon} className="post-liked-button" />: <img src={likeIcon}  className="post-like-button" />}
+                {isLiked? <img src={likedIcon} alt="Liked icon" className="post-liked-button" />: <img src={likeIcon} alt="Like icon"  className="post-like-button" />}
                 <span style={{color: isLiked? '#2DCC70':'black'}}>Like</span>
             </div>
             <div className="post-comment-button">
-                <img src={commentIcon} />
+                <img src={commentIcon} alt="Comment" />
                 <span>Comment</span>
             </div>
             <div className="post-share-button">
-                <img src={shareIcon} />
+                <img src={shareIcon} alt="Share" />
                 <span>Share</span>
             </div>
         </div>

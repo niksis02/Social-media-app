@@ -1,11 +1,11 @@
 import { useState, useEffect} from 'react';
 
-const useClickChecker = (ref) => {
-    const [outside, setOutside] = useState(null);
+const useClickChecker = (ref1, ref2) => {
+    const [outside, setOutside] = useState(true);
 
     useEffect(() => {
         function handleClickOutside(event) {
-            if (ref.current && !ref.current.contains(event.target)) {
+            if (ref1.current && !ref1.current.contains(event.target) && ref2.current && !ref2.current.contains(event.target)) {
                 setOutside(true);
             }
         }
@@ -14,7 +14,7 @@ const useClickChecker = (ref) => {
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, [ref]);
+    }, [ref1, ref2]);
 
     return { outside, setOutside };
 }

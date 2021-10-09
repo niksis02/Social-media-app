@@ -8,6 +8,7 @@ const Notification = require('../Models/NotifModel.js');
 const getUser = async (req, res) => {
     const { id } = req.body;
     const hostId = res.locals.id;
+
     try {
         const profileArray = await User.aggregate([
             {
@@ -101,18 +102,34 @@ const getUser = async (req, res) => {
                     }
                 });
 
-                const requesting = await Notification.findOne({
-                    to: id,
-                    from: hostId
-                });
+                if(Boolean(friend)) {
+                    profile.friendStatus = 1
+                }
+                else {
+                    const requesting = await Notification.findOne({
+                        to: id,
+                        from: hostId
+                    });
+    
+                    const receiving = await Notification.findOne({
+                        to: hostId,
+                        from: id
+                    });
 
-                const receiving = await Notification.findOne({
-                    to: hostId,
-                    from: id
-                });
+                    if(Boolean(requesting) && !Boolean(receiving)) {
+                        profile.friendStatus = 2;
+                    }
+                    else if(!Boolean(requesting) && Boolean(receiving)) {
+                        profile.friendStatus = 3;
+                    }
+                    else if(!Boolean(requesting) && !Boolean(receiving)) {
+                        profile.friendStatus = 4;
+                    }
+                }
 
-                
-
+            }
+            else {
+                profile.friendStatus = 0;
             }
             return res.json({status: 'ok', msg: profile});
         } 

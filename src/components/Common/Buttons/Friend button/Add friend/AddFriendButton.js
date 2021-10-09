@@ -1,10 +1,19 @@
-import addFriendIcon from '../../../../Assets/Pictures/add_friend.svg';
+import { useState } from 'react';
 
-import './AddFriend.css';
+import Loading from '../../../Loading/Loading';
 
-const AddFriend = ({id}) => {
+import addFriendIcon from '../../../../../Assets/Pictures/add_friend.svg';
+
+import './AddFriendButton.css';
+
+const AddFriendButton = ({ id, setFriendStatus }) => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const token = localStorage.getItem('token');
+
+
     const sendFriendRequest = async () => {
+        setLoading(true);
         try {
             const response = await fetch('http://localhost:5000/users/friends/request/add', {
                 method: 'post',
@@ -16,18 +25,25 @@ const AddFriend = ({id}) => {
                     receiverId: id
                 })
             })
+            const result = response.json();
+            setLoading(false);
+            setFriendStatus(2);
+            if(result.status === 'error') {
+                setError(result.msg);
+            }
         }
         catch(err) {
-            console.log(err.message);
+            setError(err.message);
         }
     }
 
     return ( 
         <div className="add-friend-button" onClick={sendFriendRequest}>
+            {loading && <Loading size={'16px'} />}
             <img src={addFriendIcon} alt="Add Friend" />
             <span>Add Friend</span>
         </div>
      );
 }
  
-export default AddFriend;
+export default AddFriendButton;

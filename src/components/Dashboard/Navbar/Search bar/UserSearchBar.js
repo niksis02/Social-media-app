@@ -13,8 +13,11 @@ const UserSearchBar = () => {
     const [query, setQuery] = useState('');
     const [page, setPage] = useState(0);
     const {data, loading, error} = useSearchFetch('http://localhost:5000/users/search', query, page);
+
     const searchResultRef = useRef(null);
-    const { outside, setOutside } = useClickChecker(searchResultRef);
+    const searchBarRef = useRef(null);
+
+    const { outside, setOutside } = useClickChecker(searchResultRef, searchBarRef);
 
     const handleSearchFocus = () => {
         setIsSearchFocused(!isSearchFocused);
@@ -39,6 +42,7 @@ const UserSearchBar = () => {
                 onChange={handleQuery}
                 onFocus={handleSearchFocus} 
                 onBlur={() => {setIsSearchFocused(!isSearchFocused)}}
+                ref={searchBarRef}
             />
             {data.length !== 0 && !outside && 
             <SearchResult 

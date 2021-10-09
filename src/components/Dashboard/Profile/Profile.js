@@ -6,8 +6,9 @@ import ProfilePhotos from './ProfilePhotos/ProfilePhotos';
 import FriendList from './FriendList/FriendList';
 import ProfileFeed from './Profile-feed/ProfileFeed';
 import ProfileHeader from './Profile-header/ProfileHeader';
-import Loading from '../../Loading/Loading';
 import useFetch from '../../../Hooks/useFetch';
+import Loading from '../../Common/Loading/Loading';
+
 
 import ProfPicMale from '../../../Assets/Pictures/profile_male.png';
 import ProfPicFemale from '../../../Assets/Pictures/profile_female.png';
@@ -30,31 +31,33 @@ const Profile = () => {
         if(!data.coverPic) {
             data.coverPic = null;
         }
-        if(typeof(data.isFriend) === 'undefined'){
-            data.isFriend = false;
-        }
         data.host = data.hostId === id;
         return data;
-    }, [data]);
+    }, [data, id]);
 
-    console.log('user:', user);
+    console.log(user);
     
     return ( 
         <>
             {user && user.name && 
                 <ProfileContext.Provider value={{user, id, loading, error}}>
                     <div className="profile">
-                        <div className="profile-upper-side">
-                            <ProfileHeader />
-                        </div>
-                        <div className="profile-lower-side">
-                            <Switch>
-                                <Route exact path={`/user-${id}/about`} component={About} />
-                                <Route exact path={`/user-${id}/friends`} component={FriendList} />
-                                <Route exact path={`/user-${id}/photos`} component={ProfilePhotos} />
-                                <Route exact path={`/user-${id}`} component={ProfileFeed} />
-                            </Switch>
-                        </div>
+                    {!loading ?
+                        <>
+                            <div className="profile-upper-side">
+                                <ProfileHeader />
+                            </div>
+                            <div className="profile-lower-side">
+                                <Switch>
+                                    <Route exact path={`/user-${id}/about`} component={About} />
+                                    <Route exact path={`/user-${id}/friends`} component={FriendList} />
+                                    <Route exact path={`/user-${id}/photos`} component={ProfilePhotos} />
+                                    <Route exact path={`/user-${id}`} component={ProfileFeed} />
+                                </Switch>
+                            </div>
+                        </>
+                        :<Loading size={'150px'} />
+                    }
                     </div>
                 </ProfileContext.Provider>
             }

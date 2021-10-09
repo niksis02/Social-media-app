@@ -4,6 +4,10 @@
     display: inline-block;
 }
 
+.profile > .loader {
+    margin: 50px auto 0 auto;
+}
+
 .profile-upper-side {
     display: flex;
     flex-direction: column;

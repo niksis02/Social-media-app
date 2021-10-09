@@ -1,0 +1,74 @@
+.friend-confirm-button-container {
+    position: relative;
+}
+
+.friend-confirm-button {
+    height: 36px;
+    width: fit-content;
+    background-color: #2DCC70;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    padding: 0 10px;
+}
+
+.friend-confirm-button:hover {
+    cursor: pointer;
+    background-color: #28B864;
+}
+
+.friend-confirm-button > span {
+    font-size: 19px;
+    font-weight: bold;
+    color: white;
+}
+
+.friend-confirm-button > img {
+    height: 16px;
+    width: 16px;
+    margin: 0 2px;
+}
+
+.friend-confirm-options-box {
+    height: fit-content;
+    width: 350px;
+    position: absolute;
+    top: 53px;
+    left: 0;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 2px 2px 2px 1px #C8C9CC;
+    padding: 7px;
+}
+
+.friend-confirm-options:after {
+    content: "";
+    position: absolute;
+    left: 45px;
+    top: -10px;
+    border-top: none;
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
+    border-bottom: 10px solid white;
+}
+
+.friend-confirm-options > li {
+    height: 35px;
+    width: 100%;
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.friend-confirm-options > li:hover {
+    background-color: #F2F2F2;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.friend-confirm-options > li > span {
+    font-size: 19px;
+    font-weight: 450;
+    margin-left: 5px;
+}

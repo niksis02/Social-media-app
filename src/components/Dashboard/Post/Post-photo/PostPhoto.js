@@ -12,11 +12,11 @@ const PostPhoto = () => {
             {post.isProfPic?
                 <div className="post-profile-photo-container">
                     <div className="post-cover-photo-background">
-                        {post.authorCoverPhoto?<img src={post.authorCoverPhoto}></img>:null}
+                        {post.authorCoverPhoto?<img src={post.authorCoverPhoto} alt="Cover Pic" ></img>:null}
                     </div>
-                    <img src={post.image} className='post-profile-photo' />
+                    <img src={post.image} alt="Post pic" className='post-profile-photo' />
                 </div>
-                : <img src={post.image} className='post-photo' />
+                : <img src={post.image} alt="Post pic" className='post-photo' />
             }
         </div>
      );
