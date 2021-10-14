@@ -5,7 +5,7 @@ const Friend = require('../Models/FriendModel.js');
 const Notification = require('../Models/NotifModel.js');
 
 
-const getUser = async (req, res) => {
+const getProfile = async (req, res) => {
     const { id } = req.body;
     const hostId = res.locals.id;
 
@@ -142,59 +142,126 @@ const getUser = async (req, res) => {
 const searchUser = async (req, res) => {
     const { regex, page } = res.locals;
 
-    const userList = await User.aggregate([
-        {
-            $project: {
-                stringId: { '$toString': '$_id'},
-                fullName : { $concat: ['$name', ' ', '$surname'] },
-                name: '$name',
-                surname: '$surname',
-                gender: '$gender'
-            }
-        },
-        {
-            $match: {
-                fullName: regex
-            }
-        },
-        {
-            $lookup: {
-                from: 'images',
-                let: {
-                    id: '$stringId'
-                },
-                pipeline: [
-                    {
-                        $match: {
-                            $expr: {
-                                $eq: ["$$id", "$userId"],
-                            }, 
-                            profilePhoto: true
+    try {
+        const userList = await User.aggregate([
+            {
+                $project: {
+                    stringId: { '$toString': '$_id'},
+                    fullName : { $concat: ['$name', ' ', '$surname'] },
+                    name: '$name',
+                    surname: '$surname',
+                    gender: '$gender'
+                }
+            },
+            {
+                $match: {
+                    fullName: regex
+                }
+            },
+            {
+                $lookup: {
+                    from: 'images',
+                    let: {
+                        id: '$stringId'
+                    },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $eq: ["$$id", "$userId"],
+                                }, 
+                                profilePhoto: true
+                            }
                         }
-                    }
-                ],
-                as: 'profilePhoto'
+                    ],
+                    as: 'profilePhoto'
+                }
+            },
+            {
+                $unset: ['fullName', 'stringId']
+            },
+            {
+                $skip: 5 * page
+            },
+            {
+                $limit: 5
             }
-        },
-        {
-            $unset: ['fullName', 'stringId']
-        },
-        {
-            $skip: 5 * page
-        },
-        {
-            $limit: 5
-        }
-    ]);
-
-    userList.map(elem => {
-        return elem.profilePhoto = elem.profilePhoto[0] ? elem.profilePhoto[0].imageURL : null;
-    })
+        ]);
     
-    return res.json({status: 'ok', msg: userList});
+        userList.map(elem => {
+            return elem.profilePhoto = elem.profilePhoto[0] ? elem.profilePhoto[0].imageURL : null;
+        })
+        
+        return res.json({status: 'ok', msg: userList});
+    }
+    catch(err) {
+        res.json({status: 'error', msg: err.message});
+    }
 }
 
+const getUser = async (req, res) => {
+    const id = res.locals.id;
+    console.log(id);
+
+    try {
+        const user = await User.aggregate([
+            {
+                $project: {
+                    _id_str: { '$toString': '$_id'},
+                    name: '$name',
+                    surname: '$surname',
+                    gender: '$gender'
+                }
+            },
+            {
+                $match: {
+                    _id_str: id
+                }
+            },
+            {
+                $lookup: {
+                    from: 'images',
+                    let: {
+                        id: '$_id_str'
+                    },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $eq: ["$$id", "$userId"],
+                                }, 
+                                profilePhoto: true
+                            }
+                        }
+                    ],
+                    as: 'profilePhotos'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$profilePhotos',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $set: {
+                    profilePic: '$profilePhotos.imageURL'
+                }
+            },
+            {
+                $unset: ['profilePhotos', '_id_str']
+            }
+        ]);
+        return res.json({status: 'ok', msg: user[0]});
+    }
+    catch(err) {
+        return res.json({status: 'error', msg: err.message});
+    }
+}
+
+
 module.exports = {
-    getUser,
-    searchUser
+    getProfile,
+    searchUser,
+    getUser
 };

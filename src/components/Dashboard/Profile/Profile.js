@@ -22,7 +22,7 @@ const Profile = () => {
     const { id } = useParams();
     const token = localStorage.getItem('token');
 
-    const { data, loading, error } = useFetch('http://localhost:5000/users/getUser', token, id);
+    const { data, loading, error } = useFetch('http://localhost:5000/users/profile', token, id);
 
     const user = useMemo(() => {
         if(!data.profilePic) {
@@ -35,7 +35,7 @@ const Profile = () => {
         return data;
     }, [data, id]);
 
-    console.log(user);
+    //console.log(user);
     
     return ( 
         <>
