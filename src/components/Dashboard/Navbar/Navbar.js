@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import logo from '../../../Assets/Pictures/logo.svg';
@@ -7,12 +7,28 @@ import notif from '../../../Assets/Pictures/notif.svg';
 import arrow from '../../../Assets/Pictures/arrow.svg';
 
 import UserSearchBar from './Search bar/UserSearchBar';
+import Messenger from './Messenger/Messenger';
+import Notifications from './Notifications/Notifications';
+import Account from './Account/Account';
 import { DashboardContext } from '../Dashboard';
+
+import useClickChecker from '../../../Hooks/useClickChecker';
 
 import './Navbar.css';
 
 const Navbar = () => {
     const { user } = useContext(DashboardContext);
+    const [navController, setNavController] = useState(0);
+    const accountRef = useRef();
+
+    const handleController = (num) => {
+        if(navController === num) {
+            setNavController(-1 * navController);
+        } 
+        else{
+            setNavController(num);
+        }
+    }
 
     return ( 
         <>
@@ -24,9 +40,18 @@ const Navbar = () => {
                         <Link to={`/user-${user._id}`} className="navbar-profile-part">
                             <li><img src={user.profilePic} alt="ProfilePic" />{user.name}</li>
                         </Link>
-                        <li><img src={chat} alt="Messenger" /></li>
-                        <li><img src={notif} alt="Notifications" /></li>
-                        <li><img src={arrow} alt="Account" /></li>
+                        <li onClick={() => handleController(1)}>
+                            <img src={chat} alt="Messenger" />
+                            {navController === 1 && <Messenger />}
+                        </li>
+                        <li onClick={() => handleController(2)}>
+                            <img src={notif} alt="Notifications" />
+                            {navController === 2 && <Notifications />}
+                        </li>
+                        <li onClick={() => handleController(3)} ref={accountRef}>
+                            <img src={arrow} alt="Account" />
+                            {navController === 3 && <Account />}
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -16,7 +16,7 @@ const ProfileFeed = () => {
     useEffect(() => {
         setPage(0);
         setData([]);
-    }, [id, setData])
+    }, [id, setData]);
 
     const posts = useMemo(() => {
         data.forEach(elem => {
@@ -30,6 +30,8 @@ const ProfileFeed = () => {
         });
         return data;
     }, [user, data]);
+
+    console.log(posts[0]);
 
     return ( 
         <div className="profile-feed" ref={feedRef}>

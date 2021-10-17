@@ -5,8 +5,15 @@ const useClickChecker = (ref1, ref2) => {
 
     useEffect(() => {
         function handleClickOutside(event) {
-            if (ref1.current && !ref1.current.contains(event.target) && ref2.current && !ref2.current.contains(event.target)) {
-                setOutside(true);
+            if(ref2) {
+                if (ref1.current && !ref1.current.contains(event.target) && ref2.current && !ref2.current.contains(event.target)) {
+                    setOutside(true);
+                }
+            }
+            if(!ref2) {
+                if (ref1.current && !ref1.current.contains(event.target)) {
+                    setOutside(true);
+                }
             }
         }
 
