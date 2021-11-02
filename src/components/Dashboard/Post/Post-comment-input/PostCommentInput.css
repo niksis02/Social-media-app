@@ -5,7 +5,7 @@
     align-items: center;
 }
 
-.post-comment-input > img {
+.post-comment-input > a > img {
     height: 32px;
     width: 32px;
     border-radius: 50%;

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 
 import search from '../../../../Assets/Pictures/search.svg';
 
@@ -11,8 +11,10 @@ import './UserSearchBar.css'
 const UserSearchBar = () => {
     const [isSearchFocused, setIsSearchFocused] = useState(false);
     const [query, setQuery] = useState('');
-    const [page, setPage] = useState(0);
-    const {data, loading, error} = useSearchFetch('http://localhost:5000/users/search', query, page);
+
+    const body = useMemo(() => ({query}), [query]);
+
+    const {data, loading, error, setPage, pageHandler} = useSearchFetch('http://localhost:5000/users/search', body, 'post');
 
     const searchResultRef = useRef(null);
     const searchBarRef = useRef(null);
@@ -50,7 +52,7 @@ const UserSearchBar = () => {
                 data={data} 
                 loading={loading}
                 error={error}
-                setPage={setPage}
+                pageHandler={pageHandler}
                 setOutside={setOutside}
             />}
         </label>

@@ -1,22 +1,27 @@
-import { useContext, useMemo, useState, useRef, useEffect } from 'react';
+import { useContext, useMemo, useRef, useEffect } from 'react';
 
 import { ProfileContext } from '../Profile';
 import Post from '../../Post/Post';
 import useScrollFetch from '../../../../Hooks/useScrollFetch';
 import InfiniteScroll from '../../../../Helpers/InfiniteScroll';
+import Loading from '../../../Common/Loading/Loading';
 
 import './ProfileFeed.css';
 
 const ProfileFeed = () => {
-    const [page, setPage] = useState(0);
     const feedRef = useRef();
     const { user, id } = useContext(ProfileContext);
-    const { data, setData, loading, error } = useScrollFetch('http://localhost:5000/users/posts/getProfileFeed', page, id);
+
+    const body = useMemo(() => ({id}), [id]);
+
+    const { data, loading, error, setData, setPage, pageHandler } = useScrollFetch('http://localhost:5000/users/posts/getProfileFeed', body, 'post');
 
     useEffect(() => {
-        setPage(0);
+        setPage(-1);
         setData([]);
     }, [id, setData]);
+
+    console.log(data);
 
     const posts = useMemo(() => {
         data.forEach(elem => {
@@ -27,20 +32,24 @@ const ProfileFeed = () => {
             elem.authorGender = user.gender;
             elem.hostId = user.hostId;
             elem.host = user.host;
+            elem.hostProfPic = user.profilePic;
         });
         return data;
     }, [user, data]);
 
-    console.log(posts[0]);
 
     return ( 
         <div className="profile-feed" ref={feedRef}>
-            <InfiniteScroll setPage={setPage} containerRef={feedRef.current}>
+            <InfiniteScroll containerRef={feedRef.current} cb={pageHandler}>
                 {
                     posts && posts.length !== 0 ? posts.map(post => {
                         return <Post post={post} key={post._id} />
                     }): <h1>No Posts available yet</h1>
                 }
+                {
+                    loading && <Loading size={'80px'} />
+                }
+                
             </InfiniteScroll>
         </div>
      );

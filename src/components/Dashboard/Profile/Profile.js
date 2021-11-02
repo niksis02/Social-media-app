@@ -20,9 +20,10 @@ export const ProfileContext = createContext({});
 
 const Profile = () => {
     const { id } = useParams();
-    const token = localStorage.getItem('token');
 
-    const { data, loading, error } = useFetch('http://localhost:5000/users/profile', token, id);
+    const body = useMemo(() => ({id}), [id]);
+
+    const { data, loading, error } = useFetch('http://localhost:5000/users/profile', body, 'post');
 
     const user = useMemo(() => {
         if(!data.profilePic) {
@@ -34,8 +35,6 @@ const Profile = () => {
         data.host = data.hostId === id;
         return data;
     }, [data, id]);
-
-    //console.log(user);
     
     return ( 
         <>

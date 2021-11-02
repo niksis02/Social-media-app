@@ -30,6 +30,7 @@ const PostAppender = ({setIsPostAppenderOpen}) => {
     const handlePost = async (e) => {
         e.preventDefault();
         const formData = new FormData();
+        setLoading(true);
         const token = localStorage.getItem('token')
         formData.append('image', pickedImage);
         formData.append('content', postContent);
@@ -42,7 +43,9 @@ const PostAppender = ({setIsPostAppenderOpen}) => {
             body: formData
         });
         const data = await response.json();
+        setLoading(false);
         setIsPostAppenderOpen(false);
+        window.location.reload();
     }
 
     return (  

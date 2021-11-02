@@ -7,7 +7,7 @@ const userSearchAuth = require('../Middlewares/userSearchAuth.js');
 const jwtAuth = require('../Middlewares/jwtAuth.js');
 
 const { userRegister, userLogin } = require('../Controllers/AuthController.js');
-const { getProfile, searchUser, getUser } = require('../Controllers/UserController.js');
+const { getProfile, searchUser, getUser, getFeed } = require('../Controllers/UserController.js');
 
 
 
@@ -19,5 +19,6 @@ userRouter.post('/login', userLogin);
 userRouter.post('/profile', jwtAuth, getProfile);
 userRouter.post('/search', userSearchAuth,  searchUser);
 userRouter.get('/user', jwtAuth, getUser);
+userRouter.post('/feed', jwtAuth, getFeed);
 
 module.exports = userRouter;

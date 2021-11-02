@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { PostContext } from '../Post';
 
@@ -11,7 +12,9 @@ const PostCommentInput = () => {
 
     return ( 
         <div className="post-comment-input">
-            <img src={post.authorProfPic} alt="Profile pic" />
+            <Link to={`/user-${post.hostId}`}>
+                <img src={post.hostProfPic} alt="Profile pic" />
+            </Link>
             <input 
                 type="text" 
                 placeholder="Write a comment..."

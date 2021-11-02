@@ -201,7 +201,6 @@ const searchUser = async (req, res) => {
 
 const getUser = async (req, res) => {
     const id = res.locals.id;
-    console.log(id);
 
     try {
         const user = await User.aggregate([
@@ -259,9 +258,181 @@ const getUser = async (req, res) => {
     }
 }
 
+const getFeed = async (req, res) => {
+    const id = res.locals.id;
+    const { page } = req.body;
+
+    console.log('page: ', page);
+
+    if(typeof(page) !== 'number' || page % 1 !== 0 || page < 0) {
+        return res.json({status: 'error', msg: 'Invalid page number'});
+    }
+
+    try {
+        const friendArray = await Friend.aggregate([
+            {
+                $project: {
+                    user1: '$user1',
+                    user2: '$user2'
+                }
+            },
+            {
+                $match: {
+                    $or: [
+                        {user1: id},
+                        {user2: id}
+                    ]
+                }
+            }
+        ]);
+    
+        const friends = friendArray.map(elem => {
+            if(elem.user1 === id) {
+                return elem.user2;
+            }
+            if(elem.user2 === id) {
+                return elem.user1;
+            }
+        });
+
+        const feed = await Post.aggregate([
+            {
+                $project: {
+                    userId: '$userId',
+                    objUserId: {$toObjectId: '$userId'},
+                    _id_str: { '$toString': '$_id'}, 
+                    content: '$content',
+                    likes: '$likes',
+                    comments: '$comments',
+                    createdAt: '$createdAt',
+                    hostId: id
+                }
+            },
+            {
+                $match: {
+                    userId: {
+                        $in: [...friends, id]
+                    }
+                }
+            },
+            {
+                $lookup: {
+                    from: 'images',
+                    localField: '_id_str',
+                    foreignField: 'postId',
+                    as: 'images'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$images',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'objUserId',
+                    foreignField: '_id',
+                    as: 'users'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$users',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: 'images',
+                    let: {
+                        id: '$userId'
+                    },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $eq: ["$$id", "$userId"],
+                                }, 
+                                profilePhoto: true
+                            }
+                        }
+                    ],
+                    as: 'profilePhotos'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$profilePhotos',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: 'images',
+                    let: {
+                        id: '$userId'
+                    },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $eq: ["$$id", "$userId"],
+                                }, 
+                                coverPhoto: true
+                            }
+                        }
+                    ],
+                    as: 'coverPhotos'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$coverPhotos',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $set: {
+                    image: '$images.imageURL',
+                    isProfPic: '$images.profilePhoto',
+                    current: '$images.current',
+                    authorGender: '$users.gender',
+                    authorName: '$users.name',
+                    authorSurname: '$users.surname',
+                    authorProfPic: '$profilePhotos.imageURL',
+                    authorCoverPic: '$coverPhotos.imageURL',
+                }
+            },
+            {
+                $sort: {
+                    createdAt: -1
+                }
+            },
+            {
+                $unset: ['_id_str', 'images', 'users', 'objUserId', 'profilePhotos', 'coverPhotos']
+            },
+            {
+                $skip: 5 * page
+            },
+            {
+                $limit: 5
+            }
+        ]);
+
+        return res.json({status: 'ok', msg: feed});
+    }
+    catch(err) {
+        return res.json({status: 'error', msg: err.message});
+    }
+    
+}
+
 
 module.exports = {
     getProfile,
     searchUser,
-    getUser
+    getUser,
+    getFeed
 };

@@ -1,48 +1,56 @@
 import { useEffect, useState } from "react";
 
-const useScrollFetch = (url, page, id) => {
+const useScrollFetch = (url, body, method) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [page, setPage] = useState(-1);
+    const token = localStorage.getItem('token');
+    console.log('page:', page);
 
-    async function fetchData(url, page, id) {
-        try {
-            setLoading(true);
-            const response = await fetch(url, {
-                method: 'post',
-                headers: { 'Content-Type': 'Application/json' },
-                body: JSON.stringify({
-                    page,
-                    id
-                })
-            });
-            const result = await response.json();
-            setLoading(false);
-
-            if(result.status === 'ok') {
-                if(page === 0) {
-                    setData(result.msg);
-                }
-                
-                else {
-                    setData(list => [...list, ...result.msg]);
-                }
-            }
-
-            if(result.status === 'error') {
-                setError(result.msg);
-            }
-        }
-        catch(err) {
-            setError(err.message);
-        }
+    function pageHandler() {
+        setPage(pg => pg + 1);
     }
 
     useEffect(() => {
-        fetchData(url, page, id);
-    }, [url, page, id])
+        async function fetchData(url, body, method) {
+            body.page = page;
+            setLoading(true);
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                         'Content-Type': 'Application/json' ,
+                         'authorization': token
+                        },
+                    body: JSON.stringify(body)
+                });
+                const result = await response.json();
+                setLoading(false);
+    
+                if(result.status === 'ok') {
+                    if(page === 0) {
+                        setData(result.msg);
+                    }
+                    
+                    else {
+                        setData(list => [...list, ...result.msg]);
+                    }
+                }
+    
+                if(result.status === 'error') {
+                    setError(result.msg);
+                }
+            }
+            catch(err) {
+                setError(err.message);
+            }
+        }
+    
+        fetchData(url, body, method);
+    }, [url, body, method, page]);
 
-    return { data, setData, loading, error };
+    return { data, loading, error, setData, setPage, pageHandler };
 }
  
 export default useScrollFetch;

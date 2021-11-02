@@ -1,18 +1,19 @@
 import { useEffect, useRef } from "react";
 
-const InfiniteScroll = ({children, containerRef, setPage}) => {
+const InfiniteScroll = ({children, cb}) => {
     const bottomRef = useRef();
 
     function scrollCallback(entries) {
         if(entries[0].isIntersecting) {
-            setPage(num => num + 1);
+            cb();
+            console.log('isIntersecting');
         }
     }
 
     useEffect(() => {
         const observer = new IntersectionObserver(scrollCallback, {
-            root: containerRef,
-            rootMargin: '10px'
+            rootMargin: '10px',
+            threshold: '1.0'
         });
 
         if(bottomRef && bottomRef.current) {
@@ -22,7 +23,7 @@ const InfiniteScroll = ({children, containerRef, setPage}) => {
         return () => {
             observer.disconnect();
         }
-    }, [containerRef]);
+    }, []);
 
     return ( 
         <>

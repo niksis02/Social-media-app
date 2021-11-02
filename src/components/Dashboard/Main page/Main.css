@@ -1,15 +1,15 @@
-.main {
-    overflow: hidden;
+.main-background {
+    height: fit-content;
+    width: 100%;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    height: 100%;
-    margin: auto;
-    border: 1px solid red;
-    max-width: 1465px;
+    align-items: center;
+    justify-content: center;
 }
 
-.main > div {
-    border: 1px solid red;
+.main {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 100%;
+    max-width: 1465px;
 }

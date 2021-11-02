@@ -5,13 +5,13 @@ import UserSearchItem from './User-search-item/UserSearchItem';
 
 import './SearchResult.css';
 
-const SearchResult = ({data, loading, error, setPage, setOutside}, ref) => {
+const SearchResult = ({data, loading, error, pageHandler, setOutside}, ref) => {
 
     return ( 
         <div className="search-result" ref={ref}>
             <InfiniteScroll 
                 containerRef={ref.current}
-                setPage={setPage}
+                cb={pageHandler}
             >
                 <ul>
                     {data.length !== 0 && 

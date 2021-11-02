@@ -1,22 +1,22 @@
 import { useState, useEffect } from 'react';
 
-const useFetch = (url, token, id) => {
+const useFetch = (url, body, method) => {
     const [data, setData] = useState({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    async function fetchData(url, token, id) {
+    const token = localStorage.getItem('token');
+
+    async function fetchData(url, body, method) {
         setLoading(true);
         try {
             const response = await fetch(url, {
-                method: 'post', 
+                method: method, 
                 headers: {
                     'Content-Type': 'Application/json',
                     'authorization': token
                 },
-                body: JSON.stringify({
-                    id
-                })
+                body: JSON.stringify(body)
             })
 
             const result = await response.json();
@@ -36,8 +36,8 @@ const useFetch = (url, token, id) => {
     }
 
     useEffect(() => {
-        fetchData(url, token, id);
-    }, [url, id, token])
+        fetchData(url, body, method);
+    }, [url, body]);
 
     return { data, loading, error};
 }

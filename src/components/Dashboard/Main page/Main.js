@@ -6,10 +6,12 @@ import './Main.css';
 
 const Main = () => {
     return ( 
-        <div className="main">
-            <MainMenu />
-            <Feed />
-            <OnlineFriendList />
+        <div className="main-background">
+            <div className="main">
+                <MainMenu />
+                <Feed />
+                <OnlineFriendList />
+            </div>
         </div>
      );
 }
