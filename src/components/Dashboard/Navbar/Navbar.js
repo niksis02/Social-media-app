@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import logo from '../../../Assets/Pictures/logo.svg';
@@ -11,8 +11,6 @@ import Messenger from './Messenger/Messenger';
 import Notifications from './Notifications/Notifications';
 import Account from './Account/Account';
 import { DashboardContext } from '../Dashboard';
-
-import useClickChecker from '../../../Hooks/useClickChecker';
 
 import './Navbar.css';
 
@@ -44,7 +42,11 @@ const Navbar = () => {
                             <img src={chat} alt="Messenger" />
                             {navController === 1 && <Messenger />}
                         </li>
-                        <li onClick={() => handleController(2)}>
+                        <li onClick={() => handleController(2)} className="notification-icon">
+                            {user.notifNumber > 0 && 
+                            <div className="notifNumber">
+                                <span>{user.notifNumber}</span>
+                            </div>}
                             <img src={notif} alt="Notifications" />
                             {navController === 2 && <Notifications />}
                         </li>

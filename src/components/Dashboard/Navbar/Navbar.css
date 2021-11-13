@@ -40,6 +40,10 @@
     justify-content: center;
 }
 
+.notification-icon {
+    position: relative;
+}
+
 .navbar-menu > li:hover {
     cursor: pointer;
     background-color: #D8DADF;
@@ -78,3 +82,22 @@
     border-radius: 50%;
     margin-right: 5px;
 }
+
+.notifNumber{
+    height: 19px;
+    width: 19px;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    border-radius: 50%;
+    background-color: #E41E3F;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notifNumber > span {
+    color: white;
+    font-size: 15px;
+}
+

@@ -1,6 +1,5 @@
 const User = require('../Models/UserModel.js');
 const Post = require('../Models/PostModel.js');
-const Image = require('../Models/ImageModel.js');
 const Friend = require('../Models/FriendModel.js');
 const Notification = require('../Models/NotifModel.js');
 
@@ -243,17 +242,33 @@ const getUser = async (req, res) => {
                 }
             },
             {
-                $set: {
-                    profilePic: '$profilePhotos.imageURL'
+                $lookup: {
+                    from: 'notifications',
+                    localField: '_id_str',
+                    foreignField: 'to',
+                    as: 'notifs'
                 }
             },
             {
-                $unset: ['profilePhotos', '_id_str']
+                $set: {
+                    profilePic: '$profilePhotos.imageURL',
+                    notifNumber: {$size: '$notifs'}
+                }
+            },
+            {
+                $unset: ['profilePhotos', '_id_str', 'notifs']
             }
         ]);
-        return res.json({status: 'ok', msg: user[0]});
+
+        if(user[0]) {
+            return res.json({status: 'ok', msg: user[0]});
+        } 
+        else {
+            return res.json({status: 'error', msg: 'User not found!'});
+        }
     }
     catch(err) {
+        console.log(err);
         return res.json({status: 'error', msg: err.message});
     }
 }
@@ -261,8 +276,6 @@ const getUser = async (req, res) => {
 const getFeed = async (req, res) => {
     const id = res.locals.id;
     const { page } = req.body;
-
-    console.log('page: ', page);
 
     if(typeof(page) !== 'number' || page % 1 !== 0 || page < 0) {
         return res.json({status: 'error', msg: 'Invalid page number'});
@@ -429,10 +442,93 @@ const getFeed = async (req, res) => {
     
 }
 
+const getNotifs = async (req, res) => {
+    const { id } = res.locals;
+    console.log('id: ', id);
+
+    try {
+        const notifs = await Notification.aggregate([
+            {
+                $project: {
+                    _id: '$_id',
+                    from: '$from',
+                    to: '$to',
+                    objUserId: {$toObjectId: '$from'},
+                    createdAt: '$createdAt'
+                }
+            },
+            {
+                $match: {
+                    to: id
+                }
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'objUserId',
+                    foreignField: '_id',
+                    as: 'user'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$user',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: 'images',
+                    let: {
+                        id: '$from'
+                    },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $eq: ["$$id", "$userId"],
+                                }, 
+                                profilePhoto: true
+                            }
+                        }
+                    ],
+                    as: 'profilePhotos'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$profilePhotos',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $set: {
+                    requesterUserId: "$user._id",
+                    requesterUserName: "$user.name",
+                    requesterUserSurname: "$user.surname",
+                    requesterUserGender: "$user.gender",
+                    requesterProfPic: "$profilePhotos.imageURL"
+                }
+            },
+            {
+                $unset: ['profilePhotos', 'user', 'objUserId']
+            }
+        ]);
+        console.log(notifs);
+        return res.json({status: 'ok', msg: notifs});
+    }
+    catch(err) {
+        console.log(err);
+        return res.json({status: 'error', msg: err.message});
+    }
+
+}
+
 
 module.exports = {
     getProfile,
     searchUser,
     getUser,
-    getFeed
+    getFeed,
+    getNotifs
 };

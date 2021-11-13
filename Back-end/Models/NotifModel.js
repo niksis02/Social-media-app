@@ -9,7 +9,7 @@ const notifSchema = mongoose.Schema({
         type: String,
         required: true
     }
-});
+}, {timestamps: true});
 
 const Notification = mongoose.model('notifications', notifSchema);
 
