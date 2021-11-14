@@ -17,7 +17,7 @@ const Account = () => {
     }
 
     return ( 
-        <ul className="account">
+        <div className="account">
             <Link to={`/user-${user._id}`}>
                 <li className="account-profile">
                     <img src={user.profilePic} alt="ProfilePicture" />
@@ -39,7 +39,7 @@ const Account = () => {
                 </div>
                 <span>Log Out</span>
             </li>
-        </ul>
+        </div>
      );
 }
  

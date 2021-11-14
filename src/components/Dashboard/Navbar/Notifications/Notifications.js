@@ -9,22 +9,19 @@ import './Notifications.css';
 const Notifications = () => {
     const body = useMemo(() => ({}), []);
 
-    const { data: notifs, loading, error } = useFetch('http://localhost:5000/users/notifications', body, 'get');
+    const { data: notifs, loading, error } = useFetch('http://localhost:5000/users/notifications/getAll', body, 'get');
 
     return (
         <>
             {
-                !loading ?
-                <ul className="notifications">
-                    {
-                        notifs && notifs.length > 0 ?
-                        notifs.map(notif => {
-                            return <Notif notif={notif} key={notif._id} />
-                        })
-                        : <h2>There are no notifications to display</h2>
-                    }
-                </ul>
-                : <Loading size={'20px'} />
+                notifs && notifs.length > 0 ?
+                notifs.map(notif => {
+                    return <Notif notif={notif} key={notif._id} />
+                })
+                : <h2>There are no notifications to display</h2>
+            }
+            {
+                loading && <Loading size={'50px'} />
             }
         </>
      );

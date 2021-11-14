@@ -5,7 +5,6 @@ const useSearchFetch = (url, body, method) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [page, setPage] = useState(-1);
-    console.log('page:', page);
 
     function pageHandler() {
         if(!loading) {

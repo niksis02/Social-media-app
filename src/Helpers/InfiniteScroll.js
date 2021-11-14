@@ -6,7 +6,6 @@ const InfiniteScroll = ({children, cb}) => {
     function scrollCallback(entries) {
         if(entries[0].isIntersecting) {
             cb();
-            console.log('isIntersecting');
         }
     }
 

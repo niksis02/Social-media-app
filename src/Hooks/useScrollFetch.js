@@ -6,7 +6,6 @@ const useScrollFetch = (url, body, method) => {
     const [error, setError] = useState('');
     const [page, setPage] = useState(-1);
     const token = localStorage.getItem('token');
-    console.log('page:', page);
 
     function pageHandler() {
         setPage(pg => pg + 1);

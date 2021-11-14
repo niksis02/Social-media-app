@@ -35,8 +35,6 @@ const Feed = () => {
         return data;
     }, [data]);
 
-    console.log(feed);
-
     return (  
         <div className="feed">
             <AddPostButton />

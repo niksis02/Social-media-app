@@ -40,7 +40,6 @@ const Navbar = () => {
                         </Link>
                         <li onClick={() => handleController(1)}>
                             <img src={chat} alt="Messenger" />
-                            {navController === 1 && <Messenger />}
                         </li>
                         <li onClick={() => handleController(2)} className="notification-icon">
                             {user.notifNumber > 0 && 
@@ -48,13 +47,19 @@ const Navbar = () => {
                                 <span>{user.notifNumber}</span>
                             </div>}
                             <img src={notif} alt="Notifications" />
-                            {navController === 2 && <Notifications />}
                         </li>
                         <li onClick={() => handleController(3)} ref={accountRef}>
                             <img src={arrow} alt="Account" />
-                            {navController === 3 && <Account />}
                         </li>
                     </ul>
+                    {
+                        navController > 0 && 
+                        <ul className="navbar-right-part-container">
+                            {navController === 1 && <Messenger />}
+                            {navController === 2 && <Notifications />}
+                            {navController === 3 && <Account />}
+                        </ul>
+                    }
                 </div>
             </div>
         </>

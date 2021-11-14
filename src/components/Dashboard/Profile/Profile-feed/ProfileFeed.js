@@ -21,8 +21,6 @@ const ProfileFeed = () => {
         setData([]);
     }, [id, setData]);
 
-    console.log(data);
-
     const posts = useMemo(() => {
         data.forEach(elem => {
             elem.authorProfPic = user.profilePic;

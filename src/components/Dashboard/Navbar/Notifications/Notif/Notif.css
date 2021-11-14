@@ -1,16 +1,80 @@
 .notif {
     height: fit-content;
     width: 100%;
-    display: flex;
+    text-decoration: none;
 }
 
-.notif > a {
+.notif > li {
     height: fit-content;
-    width: fit-content;
+    display: flex;
+    border-radius: 10px;
+    padding: 5px;
 }
 
-.notif > a > img {
+.notif > li:hover {
+    background-color: #F2F2F2;
+}
+
+.notif > li > img {
     height: 56px;
     width: 56px;
     border-radius: 50%;
+}
+
+.notif-info {
+    flex-grow: 1;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    color: #65676B;
+}
+
+.notif-info > span, .notif-info > p {
+    font-size: 19px;
+}
+
+.notif-info > p {
+    font-size: 15px;
+    margin: 5px 0;
+}
+
+.notif-info > span > strong {
+    color: black;
+}
+
+.notif-info > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin: 10px 0;
+}
+
+.notif-info > div > div {
+    height: 36px;
+    width: 108px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}   
+
+.notif-confirm {
+    background-color: #2DCC70;
+}
+
+.notif-delete {
+    background-color: #E4E6EB;
+    margin-left: 10px;
+}
+
+.notif-confirm > span {
+    font-size: 19px;
+    font-weight: 800;
+    color: white;
+}
+
+.notif-delete > span {
+    font-size: 19px;
+    font-weight: 800;
+    color: black;
 }
