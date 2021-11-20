@@ -1,5 +1,8 @@
 const Notification = require('../Models/NotifModel.js');
 const Friend = require('../Models/FriendModel.js');
+const events = require('events');
+
+const eventEmitter = new events.EventEmitter();
 
 const friendAddRequest = async (req, res) => {
     const requesterId = res.locals.id;
@@ -9,13 +12,19 @@ const friendAddRequest = async (req, res) => {
         return res.json({status: 'error', msg: 'Id is required'});
     }
     try {
-        const newFriendRequest = await Notification.create({
+        console.log('event');
+        const notif = await Notification.create({
             from: requesterId,
             to: receiverId
         })
+
+        eventEmitter.emit('notif', notif);
+        console.log('event emitted');
+
         return res.json({status: 'ok'});
     }
     catch(err) {
+        console.log(err);
         return res.json({status: 'error', msg: err.message});
     }
 }
@@ -136,5 +145,6 @@ module.exports = {
     friendCancelRequest,
     friendDeleteRequest,
     friendConfirmRequest,
-    friendDelete
+    friendDelete,
+    eventEmitter
 };

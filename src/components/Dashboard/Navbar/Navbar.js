@@ -11,12 +11,14 @@ import Messenger from './Messenger/Messenger';
 import Notifications from './Notifications/Notifications';
 import Account from './Account/Account';
 import { DashboardContext } from '../Dashboard';
+import { NotifProvider } from '../../../Contexts/NotifContext';
 
 import './Navbar.css';
 
 const Navbar = () => {
     const { user } = useContext(DashboardContext);
     const [navController, setNavController] = useState(0);
+    const [notifNumber, setNotifNumber] = useState(user.notifNumber);
     const accountRef = useRef();
 
     const handleController = (num) => {
@@ -42,9 +44,9 @@ const Navbar = () => {
                             <img src={chat} alt="Messenger" />
                         </li>
                         <li onClick={() => handleController(2)} className="notification-icon">
-                            {user.notifNumber > 0 && 
+                            {notifNumber > 0 && 
                             <div className="notifNumber">
-                                <span>{user.notifNumber}</span>
+                                <span>{notifNumber}</span>
                             </div>}
                             <img src={notif} alt="Notifications" />
                         </li>
@@ -52,14 +54,16 @@ const Navbar = () => {
                             <img src={arrow} alt="Account" />
                         </li>
                     </ul>
-                    {
-                        navController > 0 && 
-                        <ul className="navbar-right-part-container">
-                            {navController === 1 && <Messenger />}
-                            {navController === 2 && <Notifications />}
-                            {navController === 3 && <Account />}
-                        </ul>
-                    }
+                    <NotifProvider setNotifNumber={setNotifNumber}>
+                        {
+                            navController > 0 && 
+                            <ul className="navbar-right-part-container">
+                                {navController === 1 && <Messenger />}
+                                {navController === 2 && <Notifications setNotifNumber={setNotifNumber} />}
+                                {navController === 3 && <Account />}
+                            </ul>
+                        }
+                    </NotifProvider>
                 </div>
             </div>
         </>

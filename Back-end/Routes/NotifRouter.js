@@ -1,10 +1,11 @@
 const notifRouter = require('express').Router();
 
-const { getNotifs } = require('../Controllers/NotifController.js');
+const { getNotifs, getNotifRealTime } = require('../Controllers/NotifController.js');
 const jwtAuth = require('../Middlewares/jwtAuth.js');
 
 
-notifRouter.get('/getAll', jwtAuth, getNotifs);
+notifRouter.post('/getAll', jwtAuth, getNotifs);
+notifRouter.get('/getRealTime', jwtAuth, getNotifRealTime);
 
 
 module.exports = notifRouter;

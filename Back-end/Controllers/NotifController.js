@@ -1,7 +1,15 @@
 const Notification = require('../Models/NotifModel.js');
+const { eventEmitter } = require('./FriendController.js');
+
+eventEmitter.setMaxListeners(1);
 
 const getNotifs = async (req, res) => {
     const { id } = res.locals;
+    const { page } = req.body;
+
+    if(typeof(page) !== 'number' || page % 1 !== 0 || page < 0) {
+        return res.json({status: 'error', msg: 'Invalid page number'});
+    }
 
     try {
         const notifs = await Notification.aggregate([
@@ -69,9 +77,20 @@ const getNotifs = async (req, res) => {
             },
             {
                 $unset: ['profilePhotos', 'user', 'objUserId']
+            },
+            {
+                $sort: {
+                    createdAt: -1
+                }
+            },
+            {
+                $skip: 10 * page
+            },
+            {
+                $limit: 10
             }
         ]);
-        console.log(notifs);
+        
         return res.json({status: 'ok', msg: notifs});
     }
     catch(err) {
@@ -81,6 +100,16 @@ const getNotifs = async (req, res) => {
 
 }
 
+const getNotifRealTime = (req, res) => {
+    const { id } = res.locals;
+    eventEmitter.once('notif', function(notif) {
+        if(notif.to === id) {
+            return res.json(notif);
+        }
+    });
+}
+
 module.exports = {
-    getNotifs
+    getNotifs,
+    getNotifRealTime
 }

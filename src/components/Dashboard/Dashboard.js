@@ -51,8 +51,6 @@ const Dashboard = () => {
         fetchData();
     }, []);
 
-    console.log(error);
-
     if(!token){
         history.push('/login');
         return null;
