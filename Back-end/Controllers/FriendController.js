@@ -1,8 +1,71 @@
 const Notification = require('../Models/NotifModel.js');
 const Friend = require('../Models/FriendModel.js');
+const User = require('../Models/UserModel.js');
 const events = require('events');
 
 const eventEmitter = new events.EventEmitter();
+
+const friendGetOnlineOnes = async (req, res) => {
+    const { friendIds } = req.body;
+    try{
+        const friends = await User.aggregate([
+            {
+                $project: {
+                    _id_str: { '$toString': '$_id'},
+                    name: '$name',
+                    surname: '$surname',
+                    gender: '$gender'
+                }
+            },
+            {
+                $match: {
+                    _id_str: {
+                        $in: friendIds
+                    }
+                }
+            },
+            {
+                $lookup: {
+                    from: 'images',
+                    let: {
+                        id: '$_id_str'
+                    },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $eq: ["$$id", "$userId"],
+                                }, 
+                                profilePhoto: true
+                            }
+                        }
+                    ],
+                    as: 'profilePhotos'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$profilePhotos',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $set: {
+                    profilePic: '$profilePhotos.imageURL',
+                }
+            },
+            {
+                $unset: ['profilePhotos', '_id_str']
+            }
+        ]);
+
+        return res.json({status: 'ok', msg: friends});
+
+    }
+    catch(err) {
+        return res.json({status: 'error', msg: err.message});
+    }
+}
 
 const friendAddRequest = async (req, res) => {
     const requesterId = res.locals.id;
@@ -141,6 +204,7 @@ const friendDelete = async (req, res) => {
 
 
 module.exports = { 
+    friendGetOnlineOnes,
     friendAddRequest, 
     friendCancelRequest,
     friendDeleteRequest,

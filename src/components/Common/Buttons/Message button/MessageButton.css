@@ -1,0 +1,23 @@
+.message-button {
+    height: 36px;
+    display: flex;
+    align-items: center;
+    background-color: #E4E6EB;
+    border-radius: 8px;
+    padding: 0 10px;
+}
+
+.message-button:hover {
+    cursor: pointer;
+    background-color: #D8DADF;
+}
+
+.message-button > img {
+    height: 16px;
+    width: 16px;
+}
+
+.message-button > span {
+    font-size: 19px;
+    margin-left: 5px;
+}

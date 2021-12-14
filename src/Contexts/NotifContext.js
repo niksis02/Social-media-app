@@ -24,7 +24,6 @@ export const NotifProvider = ({children, setNotifNumber}) => {
     async function notifLongPoll() {
         let isThereError = false;
         while(true) {
-            console.log('fetching long poll');
             try {
                 const response = await fetchWithTimeout('http://localhost:5000/users/notifications/getRealTime', {
                     headers: {

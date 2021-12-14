@@ -1,14 +1,14 @@
 import { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { DashboardContext } from '../../Dashboard';
 
 import settingsIcon from '../../../../Assets/Pictures/settings.svg';
 import logOutIcon from '../../../../Assets/Pictures/logOut.svg';
+import { DashboardContext } from '../../../../Contexts/DashboardContext';
 
 import './Account.css';
 
 const Account = () => {
-    const { user } = useContext(DashboardContext);
+    const { currentUser: user } = useContext(DashboardContext);
     const history = useHistory()
 
     const handleLogOut = () => {

@@ -1,5 +1,8 @@
 .online-friend-list {
-    width: 377px;
+    width: 360px;
     height: calc(100vh - 70px);
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }

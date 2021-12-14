@@ -4,3 +4,14 @@
     background-color: #F0F2F5;
     overflow: auto;
 }
+
+.messenger-container {
+    position: fixed;
+    bottom: 0;
+    right: 90px;
+    display: flex;
+}
+
+.messenger-container > div {
+    margin: 0 5px;
+}

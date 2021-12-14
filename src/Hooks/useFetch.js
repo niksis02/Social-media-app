@@ -7,49 +7,56 @@ const useFetch = (url, body, method) => {
 
     const token = localStorage.getItem('token');
 
-    async function fetchData(url, body, method) {
-        setLoading(true);
-        try {
-            let options;
-            if(method === 'get') {
-                options = {
-                    headers: {
-                        'authorization': token
+    useEffect(() => {
+        const controller = new AbortController();
+
+        async function fetchData(url, body, method) {
+            setLoading(true);
+            try {
+                let options;
+                if(method === 'get') {
+                    options = {
+                        headers: {
+                            'authorization': token
+                        },
+                        signal: controller.signal
                     }
                 }
-            }
-            else {
-                options = {
-                    method: method, 
-                    headers: {
-                        'Content-Type': 'Application/json',
-                        'authorization': token
-                    },
-                    body: JSON.stringify(body)
+                else {
+                    options = {
+                        method: method, 
+                        headers: {
+                            'Content-Type': 'Application/json',
+                            'authorization': token
+                        },
+                        body: JSON.stringify(body),
+                        signal: controller.signal
+                    }
+                }
+                const response = await fetch(url, options)
+
+                const result = await response.json();
+                setLoading(false);
+
+                if(result.status === 'ok') {
+                    setData(result.msg);
+                }
+
+                if(result.status === 'error') {
+                    setError(result.msg);
                 }
             }
-            const response = await fetch(url, options)
-
-            const result = await response.json();
-            setLoading(false);
-
-            if(result.status === 'ok') {
-                setData(result.msg);
-            }
-
-            if(result.status === 'error') {
-                setError(result.msg);
+            catch(err) {
+                if(err.name !== 'AbortError') {
+                    setError(err.message);
+                    setLoading(false);
+                }
             }
         }
-        catch(err) {
-            setError(err.message);
-        }
-    }
 
-    useEffect(() => {
         fetchData(url, body, method);
-        console.log('fetching');
-    }, [url, body]);
+        return () => controller.abort();
+    }, [url, body, token]);
 
     return { data, loading, error};
 }

@@ -200,7 +200,7 @@ const searchUser = async (req, res) => {
 
 const getUser = async (req, res) => {
     const id = res.locals.id;
-
+    console.log('id:', id);
     try {
         const user = await User.aggregate([
             {
@@ -260,7 +260,35 @@ const getUser = async (req, res) => {
             }
         ]);
 
+        const friendArray = await Friend.aggregate([
+            {
+                $project: {
+                    user1: '$user1',
+                    user2: '$user2'
+                }
+            },
+            {
+                $match: {
+                    $or: [
+                        {user1: id},
+                        {user2: id}
+                    ]
+                }
+            }
+        ]);
+    
+        const friends = friendArray.map(elem => {
+            if(elem.user1 === id) {
+                return elem.user2;
+            }
+            if(elem.user2 === id) {
+                return elem.user1;
+            }
+        });
+
+
         if(user[0]) {
+            user[0].friends = friends;
             return res.json({status: 'ok', msg: user[0]});
         } 
         else {
@@ -315,8 +343,9 @@ const getFeed = async (req, res) => {
                     objUserId: {$toObjectId: '$userId'},
                     _id_str: { '$toString': '$_id'}, 
                     content: '$content',
-                    likes: '$likes',
-                    comments: '$comments',
+                    likes: { $size: '$likes'},
+                    isLikedByCurrentUser: { $in: [id, '$likes']},
+                    comments: { $size: '$comments'},
                     createdAt: '$createdAt',
                     hostId: id
                 }
@@ -437,6 +466,7 @@ const getFeed = async (req, res) => {
         return res.json({status: 'ok', msg: feed});
     }
     catch(err) {
+        console.log(err);
         return res.json({status: 'error', msg: err.message});
     }
     

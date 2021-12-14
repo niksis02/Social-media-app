@@ -24,6 +24,11 @@
     margin-right: 10px;
 }
 
+.post-likes-bar svg:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
 .post-info-comment-bar {
     display: flex;
     align-items: center;

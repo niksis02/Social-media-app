@@ -1,0 +1,59 @@
+.post-like-list-item {
+    height: 56px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-like-list-item-1 {
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.post-like-list-item-1 > div {
+    position: relative;
+}
+
+.post-like-list-item-1 > div > div {
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.post-like-list-item-img1 {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+
+.post-like-list-item-img2 {
+    height: 16px;
+    width: 16px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.post-like-list-item-1 > a {
+    margin-left: 8px;
+    text-decoration: none;
+    color: black;
+}
+
+.post-like-list-item-1 > a > span {
+    font-weight: bold;
+}
+
+.post-like-list-item-1 > a > span:hover {
+    text-decoration: underline;
+}
+
+.post-like-list-item > :nth-child(2) {
+    margin-right: 10px;
+}

@@ -2,6 +2,7 @@ const userRouter = require('express').Router();
 const postRouter = require('./PostRouter.js');
 const friendRouter = require('./FriendRouter.js');
 const notifRouter = require('./NotifRouter.js');
+const messageRouter = require('./MessageRouter.js');
 
 const authentication = require('../Middlewares/Authenticaion.js');
 const userSearchAuth = require('../Middlewares/userSearchAuth.js');
@@ -15,6 +16,7 @@ const { getProfile, searchUser, getUser, getFeed } = require('../Controllers/Use
 userRouter.use('/posts', postRouter);
 userRouter.use('/friends', friendRouter);
 userRouter.use('/notifications', notifRouter);
+userRouter.use('/messages', messageRouter);
 
 userRouter.post('/register', authentication, userRegister);
 userRouter.post('/login', userLogin);

@@ -10,8 +10,7 @@ import './PostButtons.css';
 
 const PostButtons = () => {
     const { post, likes, setLikes } = useContext(PostContext);
-    const isLikedByCurrentUser = Boolean(likes.find(elem => elem === post.hostId));
-    const [isLiked, setIsLiked] = useState(isLikedByCurrentUser);
+    const [isLiked, setIsLiked] = useState(post.isLikedByCurrentUser);
 
     const token = localStorage.getItem('token');
 
@@ -32,7 +31,7 @@ const PostButtons = () => {
                 const data = await result.json();
                 if(data.status === 'ok') {
                     setIsLiked(false);
-                    setLikes(likes.filter(elem => elem !== post.hostId));
+                    setLikes(like => like - 1);
                 }
                 else {
                     new Error(data.msg);
@@ -57,7 +56,7 @@ const PostButtons = () => {
                 const data = await result.json();
                 if(data.status === 'ok') {
                     setIsLiked(true);
-                    setLikes([...likes, post.hostId]);
+                    setLikes(like => like + 1);
                 }
                 else {
                     new Error(data.msg);

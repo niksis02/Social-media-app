@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 
 import imageIcon from '../../../../../Assets/Pictures/gallery.svg';
-import xIcon from '../../../../../Assets/Pictures/xIcon.svg';
+import { ReactComponent as XIcon } from '../../../../../Assets/Pictures/xIcon.svg';
 
 import Loading from '../../../Loading/Loading';
 
@@ -52,8 +52,10 @@ const PostAppender = ({setIsPostAppenderOpen}) => {
         <div className="post-appender-background" onMouseDown={handleOpen} ref={windowRef}>
             <div className="post-appender">
                 <div className="post-appender-header">
-                    <span>Creat post</span>
-                    <div onClick={() => {setIsPostAppenderOpen(false)}}><img src={xIcon} alt=""/></div>
+                    <span>Create post</span>
+                    <div onClick={() => {setIsPostAppenderOpen(false)}}>
+                        <XIcon fill="#606770" className="post-appender-x-icon" />
+                    </div>
                 </div>
                 <div className="post-appender-mid-part">
                     <div 

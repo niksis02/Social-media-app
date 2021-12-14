@@ -5,7 +5,7 @@ import useScrollFetch from '../../../../Hooks/useScrollFetch';
 import Post from '../../Post/Post';
 import InfiniteScroll from '../../../../Helpers/InfiniteScroll';
 import Loading from '../../../Common/Loading/Loading';
-import { DashboardContext } from '../../Dashboard';
+import { DashboardContext } from '../../../../Contexts/DashboardContext';
 
 import ProfPicMale from '../../../../Assets/Pictures/profile_male.png';
 import ProfPicFemale from '../../../../Assets/Pictures/profile_female.png';
@@ -15,7 +15,7 @@ import './Feed.css';
 
 
 const Feed = () => {
-    const { user } = useContext(DashboardContext);
+    const { currentUser } = useContext(DashboardContext);
 
     const body = useMemo(() => ({}), []);
 
@@ -30,7 +30,7 @@ const Feed = () => {
             if(!post.authorCoverPic) {
                 post.authorCoverPic = null;
             }
-            post.hostProfPic = user.profilePic;
+            post.hostProfPic = currentUser.profilePic;
         });
         return data;
     }, [data]);

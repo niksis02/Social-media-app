@@ -3,6 +3,8 @@ const cloudinary = require('../Utils/Cloudinary.js');
 
 const Post = require('../Models/PostModel.js');
 const Image = require('../Models/ImageModel.js');
+const User = require('../Models/UserModel.js');
+const Friend = require('../Models/FriendModel.js');
 
 const postAdd = async (req, res) => {
     try {
@@ -75,6 +77,7 @@ const postLikeRemove = async(req, res) => {
 
 const getProfileFeed = async (req, res) => {
     const { page, id } = req.body;
+    const requesterId = res.locals.id;
 
     if(typeof(page) !== 'number' || page % 1 !== 0 || page < 0) {
         return res.json({status: 'error', msg: 'Invalid page number'});
@@ -87,8 +90,9 @@ const getProfileFeed = async (req, res) => {
                     userId: '$userId',
                     _id_str: { '$toString': '$_id'}, 
                     content: '$content',
-                    likes: '$likes',
-                    comments: '$comments',
+                    likes: {$size: '$likes'},
+                    comments: {$size: '$comments'},
+                    isLikedByCurrentUser: { $in: [requesterId, '$likes']},
                     createdAt: '$createdAt'
                 }
             },
@@ -141,9 +145,200 @@ const getProfileFeed = async (req, res) => {
     }
 }
 
+const getPostLikes = async (req, res) => {
+    const { postId, page } = req.body;
+    const requesterId = res.locals.id;
+
+    if(typeof(page) !== 'number' || page % 1 !== 0 || page < 0) {
+        return res.json({status: 'error', msg: 'Invalid page number'});
+    }
+
+
+    try {
+        const likeArray = await Post.findById(postId, 'likes');
+
+        console.log('likeArray:', likeArray);
+
+        let likeUsersArray = await User.aggregate([
+            {
+                $project: {
+                    name: '$name',
+                    surname: '$surname',
+                    gender: '$gender',
+                    _id_str: { '$toString': '$_id'}
+                }
+            },
+            {
+                $match: {
+                    _id_str: {
+                        $in: likeArray.likes
+                    }
+                }
+            },
+            {
+                $lookup: {
+                    from: 'images',
+                    let: {
+                        id: { '$toString': '$_id'},
+                    },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $eq: ["$$id", "$userId"],
+                                }, 
+                                profilePhoto: true
+                            }
+                        }
+                    ],
+                    as: 'profilePhotos'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$profilePhotos',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: 'friends',
+                    let: {
+                        user1Id: '$_id_str',
+                        user2Id: requesterId
+                    },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        {
+                                            $or: [
+                                                {
+                                                    $eq: ['$$user1Id', '$user1']
+                                                },
+                                                {
+                                                    $eq: ['$$user2Id', '$user1']
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            $or: [
+                                                {
+                                                    $eq: ['$$user1Id', '$user2']
+                                                },
+                                                {
+                                                    $eq: ['$$user2Id', '$user2']
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ],
+                    as: 'isFriend'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'notifications',
+                    let: {
+                        user: '$_id_str',
+                        host: requesterId
+                    },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        {
+                                            $eq: ['$$user', '$to']
+                                        },
+                                        {
+                                            $eq: ['$$host', '$from']
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ],
+                    as: 'sentRequest'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'notifications',
+                    let: {
+                        user: '$_id_str',
+                        host: requesterId
+                    },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        {
+                                            $eq: ['$$host', '$to']
+                                        },
+                                        {
+                                            $eq: ['$$user', '$from']
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ],
+                    as: 'receivedRequest'
+                }
+            },
+            {
+                $set: {
+                    profilePic: '$profilePhotos.imageURL',
+                    friendStatus: {
+                        $switch: {
+                            branches: [
+                                {case: {$eq: [requesterId, '$_id_str']}, then: 0},
+                                {case: {$eq: [{$size: '$isFriend'}, 1]}, then: 1},
+                                {case: {$eq: [{$size: '$sentRequest'}, 1]}, then: 2},
+                                {case: {$eq: [{$size: '$receivedRequest'}, 1]}, then: 3}
+                            ],
+                            default: 4
+                        }
+                    }
+                }
+            },
+            {
+                $unset: ['profilePhotos', 'isFriend', 'sentRequest', 'receivedRequest']
+            },
+            {
+                $sort: {
+                    friendStatus: 1
+                }
+            },
+            {
+                $skip: 10 * page
+            },
+            {
+                $limit: 10
+            }
+        ]);
+
+        console.log(likeUsersArray);
+
+        return res.json({status: 'ok', msg: likeUsersArray});
+    }
+    catch(err) {
+        console.log(err);
+        return res.json({status: 'ok', msg: err.message});
+    }
+
+}
+
 module.exports = {
     postAdd,
     postLikeAdd,
     postLikeRemove,
-    getProfileFeed
+    getProfileFeed,
+    getPostLikes
 }

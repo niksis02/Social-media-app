@@ -1,0 +1,49 @@
+.messenger-header {
+    height: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 1.5px #d1d3d6;
+    padding: 8px;
+} 
+
+.messenger-header-userInfo {
+    display: flex;
+    margin: 0 10px;
+    align-items: center;
+}
+
+.messenger-header-userInfo > a {
+    text-decoration: none;
+    color: black;
+}
+
+.messenger-header-userInfo > a > img {
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+}
+
+.messenger-header-userName > span {
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.messenger-header-x-icon-container {
+    height: 26px;
+    width: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.messenger-header-x-icon-container:hover {
+    background-color: #E4E6EB;
+    cursor: pointer;
+}
+
+.messenger-header-x-icon {
+    height: 26px;
+    width: 26px;
+}

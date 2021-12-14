@@ -6,9 +6,11 @@ const {
     friendCancelRequest,
     friendDeleteRequest,
     friendConfirmRequest,
-    friendDelete
+    friendDelete,
+    friendGetOnlineOnes
 } = require('../Controllers/FriendController.js');
 
+friendRouter.post('/get/online', jwtAuth, friendGetOnlineOnes);
 friendRouter.post('/request/add', jwtAuth, friendAddRequest);
 friendRouter.post('/request/cancel', jwtAuth, friendCancelRequest);
 friendRouter.post('/request/delete', jwtAuth, friendDeleteRequest);

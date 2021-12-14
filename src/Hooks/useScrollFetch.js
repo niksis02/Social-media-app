@@ -12,6 +12,8 @@ const useScrollFetch = (url, body, method) => {
     }
 
     useEffect(() => {
+        const controller = new AbortController();
+
         async function fetchData(url, body, method) {
             body.page = page;
             setLoading(true);
@@ -22,7 +24,8 @@ const useScrollFetch = (url, body, method) => {
                          'Content-Type': 'Application/json' ,
                          'authorization': token
                         },
-                    body: JSON.stringify(body)
+                    body: JSON.stringify(body),
+                    signal: controller.signal
                 });
                 const result = await response.json();
                 setLoading(false);
@@ -42,11 +45,16 @@ const useScrollFetch = (url, body, method) => {
                 }
             }
             catch(err) {
-                setError(err.message);
+                if(err.name !== 'AbortError') {
+                    setError(err.message);
+                    setLoading(false);
+                }
             }
         }
     
         fetchData(url, body, method);
+
+        return () => controller.abort();
     }, [url, body, method, page]);
 
     return { data, loading, error, setData, setPage, pageHandler };

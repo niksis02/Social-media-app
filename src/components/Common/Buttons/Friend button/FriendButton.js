@@ -13,8 +13,6 @@ const FriendButton = ({id, friendStatusProp}) => {
         setFriendStatus(friendStatusProp)
     }, [id, friendStatusProp]);
 
-    console.log(friendStatus);
-
     return ( 
         <>
             {friendStatus === 1 && <CurrentFriendButton id={id} setFriendStatus={setFriendStatus} />}

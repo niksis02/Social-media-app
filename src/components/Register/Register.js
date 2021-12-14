@@ -6,6 +6,7 @@ import Select from './Select/Select';
 import Gender from './Gender/Gender';
 
 import { RegisterContext } from '../../Contexts/RegisterContext.js';
+import { DashboardContext } from '../../Contexts/DashboardContext';
 
 import './Register.css';
 
@@ -22,6 +23,7 @@ const Register = () => {
         error, 
         setError
     } = useContext(RegisterContext);
+    const { setToken } = useContext(DashboardContext);
 
     let history = useHistory();
     const token = localStorage.getItem('token');
@@ -67,7 +69,7 @@ const Register = () => {
     else {
         return ( 
             <div className="register">
-                <form className="register-template" onSubmit={handleSubmit}>
+                <form className="register-template" onSubmit={(e) => {handleSubmit(e)}}>
                     <span className="top-bar"><Link to="/login">Login </Link>/ <span>Register</span></span>
                     { error ? <span className='register-error'> { error } </span>: null }
                     <RegisterInput />

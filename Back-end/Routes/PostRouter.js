@@ -6,12 +6,14 @@ const {
     postAdd,
     postLikeAdd,
     postLikeRemove,
-    getProfileFeed
+    getProfileFeed,
+    getPostLikes
 } = require('../Controllers/PostController.js');
 
 postRouter.post('/add', upload.single('image'), jwtAuth, postAdd);
 postRouter.put('/likes/add', jwtAuth, postLikeAdd);
 postRouter.put('/likes/remove', jwtAuth, postLikeRemove);
-postRouter.post('/getProfileFeed', getProfileFeed);
+postRouter.post('/getProfileFeed', jwtAuth, getProfileFeed);
+postRouter.post('/likes/getAll', jwtAuth, getPostLikes);
 
 module.exports = postRouter;

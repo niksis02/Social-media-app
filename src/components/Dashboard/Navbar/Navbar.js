@@ -7,18 +7,18 @@ import notif from '../../../Assets/Pictures/notif.svg';
 import arrow from '../../../Assets/Pictures/arrow.svg';
 
 import UserSearchBar from './Search bar/UserSearchBar';
-import Messenger from './Messenger/Messenger';
+import MessengerNavigator from './Messenger/MessengerNavigator';
 import Notifications from './Notifications/Notifications';
 import Account from './Account/Account';
-import { DashboardContext } from '../Dashboard';
+import { DashboardContext } from '../../../Contexts/DashboardContext';
 import { NotifProvider } from '../../../Contexts/NotifContext';
 
 import './Navbar.css';
 
 const Navbar = () => {
-    const { user } = useContext(DashboardContext);
+    const { currentUser } = useContext(DashboardContext);
     const [navController, setNavController] = useState(0);
-    const [notifNumber, setNotifNumber] = useState(user.notifNumber);
+    const [notifNumber, setNotifNumber] = useState(currentUser.notifNumber);
     const accountRef = useRef();
 
     const handleController = (num) => {
@@ -37,8 +37,8 @@ const Navbar = () => {
                     <Link to="/"><img src={logo} alt="N" className="logo" /></Link>
                     <UserSearchBar />
                     <ul className="navbar-menu">
-                        <Link to={`/user-${user._id}`} className="navbar-profile-part">
-                            <li><img src={user.profilePic} alt="ProfilePic" />{user.name}</li>
+                        <Link to={`/user-${currentUser._id}`} className="navbar-profile-part">
+                            <li><img src={currentUser.profilePic} alt="ProfilePic" />{currentUser.name}</li>
                         </Link>
                         <li onClick={() => handleController(1)}>
                             <img src={chat} alt="Messenger" />
@@ -58,7 +58,7 @@ const Navbar = () => {
                         {
                             navController > 0 && 
                             <ul className="navbar-right-part-container">
-                                {navController === 1 && <Messenger />}
+                                {navController === 1 && <MessengerNavigator />}
                                 {navController === 2 && <Notifications setNotifNumber={setNotifNumber} />}
                                 {navController === 3 && <Account />}
                             </ul>

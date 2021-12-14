@@ -1,0 +1,65 @@
+.message-own {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-end;
+    margin: 5px 20px 5px 0;
+}
+
+.message-own > div {
+    width: fit-content;
+    height: fit-content;
+    min-height: 28px;
+    border-radius: 20px;
+    background-color: #2DCC70;
+    word-break: break-all;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 205px;
+    font-size: 15px;
+    padding: 7px 12px;
+    color: white;
+    align-self: flex-end;
+}
+
+.message-own > span {
+    font-size: 14px;
+    margin: 5px 3px 0 0;
+    align-self: flex-end;
+}
+
+.message {
+    margin: 5px 0;
+}
+
+.message > div {
+    display: flex;
+    align-items: center;
+}
+
+.message > div > div {
+    min-height: 28px;
+    border-radius: 20px;
+    background-color: #E4E6EB;
+    word-break: break-all;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 7px 12px;
+    max-width: 180px;
+    font-size: 15px;
+}
+
+.message-date {
+    font-size: 14px;
+    margin-left: 13px;
+    margin-top: 5px;
+}
+
+.message > div > img {
+    height: 28px;
+    width: 28px;
+    border-radius: 50%;
+    margin: 0 7px;
+    align-self: flex-end;
+}
