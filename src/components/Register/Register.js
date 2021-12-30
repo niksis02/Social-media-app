@@ -23,7 +23,6 @@ const Register = () => {
         error, 
         setError
     } = useContext(RegisterContext);
-    const { setToken } = useContext(DashboardContext);
 
     let history = useHistory();
     const token = localStorage.getItem('token');

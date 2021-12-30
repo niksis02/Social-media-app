@@ -1,4 +1,5 @@
 const Message = require('../Models/MessageModel.js');
+const User = require('../Models/UserModel.js');
 
 const addMessage = async (req, res) => {
     try {
@@ -68,4 +69,66 @@ const getMessages = async (req, res) => {
     }
 }
 
-module.exports = { addMessage, getMessages };
+const getChats = async (req, res) => {
+    const { id } = res.locals;
+    const { page } = req.body;
+    try {
+        const messages = await Message.aggregate([
+            {
+                $project: {
+                    message: '$text',
+                    senderId: '$senderId',
+                    receiverId: '$receiverId',
+                    createdAt: '$createdAt'
+                }
+            },
+            {
+                $match: {
+                    $or: [
+                        {
+                            senderId: id
+                        },
+                        {
+                            receiverId: id
+                        }
+                    ]
+                }
+            }
+        ]);
+        
+        const uniqueMessages = messages.reverse().filter((message, index, list) => {
+            return index === list.findIndex(e => 
+                (e.senderId === message.senderId && e.receiverId === message.receiverId) || 
+                (e.receiverId === message.senderId && e.senderId === message.receiverId)
+                );
+        });
+
+        const messageUserIds = uniqueMessages.map(elem => elem.senderId !== id? elem.senderId: elem.receiverId);
+        console.log(messageUserIds);
+        console.log('id: ', id);
+
+        const messengerUsers = User.aggregate([
+            {
+                $project: {
+                    _id_str: { '$toString': '$_id'}, 
+                    name: '$name',
+                    surname: '$surname',
+                    gender: '$gender'
+                }
+            },
+            {
+                $match: {
+                    _id_str: {
+                        $in: messageUserIds
+                    }
+                }
+            }
+        ]);
+
+    }
+    catch(err) {
+        return res.json({status: 'error', msg: err.message});
+    }
+}
+
+module.exports = { addMessage, getMessages, getChats };

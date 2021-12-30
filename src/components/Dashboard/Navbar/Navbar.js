@@ -1,7 +1,7 @@
 import { useContext, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import logo from '../../../Assets/Pictures/logo.svg';
+import logo from '../../../Assets/Pictures/Nikoyan.svg';
 import chat from '../../../Assets/Pictures/chat.svg';
 import notif from '../../../Assets/Pictures/notif.svg';
 import arrow from '../../../Assets/Pictures/arrow.svg';

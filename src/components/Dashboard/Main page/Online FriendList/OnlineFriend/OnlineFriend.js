@@ -6,6 +6,7 @@ import './OnlineFriend.css';
 
 const OnlineFriend = ({user}) => {
     const { addOpenChat } = useContext(DashboardContext);
+    console.log('chat user: ', user);
 
     return ( 
         <div className="online-friend" onClick={() => {addOpenChat(user)}}>
